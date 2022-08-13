@@ -22,6 +22,8 @@ GridLayout {
     columnSpacing: 0
     rowSpacing: 0
 
+    Plasmoid.preferredRepresentation: Plasmoid.fullRepresentation
+
     PagerModel {
         id: pagerModel
 
@@ -35,14 +37,31 @@ GridLayout {
         id: indicatorRepeater
         model: pagerModel.count
 
-        PlasmaComponents.Label {
-            id: inidicatorDot
-
-            text: {
-                if (index == pagerModel.currentPage) {
-                    return "●";
-                } else {
-                    return "○";
+        Rectangle {
+            id: indicatorContainer
+            
+            color: "transparent"
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.minimumWidth: PlasmaCore.Theme.defaultFont.pixelSize
+            
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    pagerModel.changePage(pagerModel.currentPage + 1);
+                }
+            }
+            
+            PlasmaComponents.Label {
+                id: inidicatorDot
+                
+                anchors.centerIn: parent
+                text: {
+                    if (index == pagerModel.currentPage) {
+                        return "●";
+                    } else {
+                        return "○";
+                    }
                 }
             }
         }
