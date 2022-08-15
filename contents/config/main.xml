@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+      http://www.kde.org/standards/kcfg/1.0/kcfg.xsd">
+  <kcfgfile name=""/>
+
+  <group name="General">
+    <entry name="leftClickAction" type="Enum">
+      <label>What happens when you left click on the widget.</label>
+      <choices name="Settings::leftClickAction">
+        <choice name="None" />
+        <choice name="NextDesktop" />
+        <choice name="PrevDesktop" />
+        <choice name="ShowOverview" />
+      </choices>
+      <default>1</default>
+    </entry>
+    <entry name="rightClickAction" type="Enum">
+      <label>What happens when you right click on the widget.</label>
+      <choices name="Settings::rightClickAction">
+        <choice name="None" />
+        <choice name="NextDesktop" />
+        <choice name="PrevDesktop" />
+        <choice name="ShowOverview" />
+      </choices>
+      <default>0</default>
+    </entry>
+    <entry name="scrollWheelOff" type="Bool">
+      <label>Whether scrolling the mouse on the widget changes the current desktop.</label>
+      <default>false</default>
+    </entry>
+    <entry name="desktopWrapOn" type="Bool">
+      <label>Whether the desktop navigation stops at the end or wraps around</label>
+      <default>false</default>
+    </entry>
+  </group>
+</kcfg>
