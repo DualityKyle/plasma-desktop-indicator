@@ -15,6 +15,8 @@ import org.kde.plasma.private.pager 2.0
 GridLayout {
     id: root
 
+    property int scrollWheelDelta: 0
+
     rows: pagerModel.layoutRows
     columns: Math.ceil(pagerModel.count / pagerModel.layoutRows)
     columnSpacing: 0
@@ -43,10 +45,11 @@ GridLayout {
             Layout.fillHeight: true
             Layout.minimumWidth: PlasmaCore.Theme.defaultFont.pixelSize
 
-            // TODO: Clean up and refactor this horrible, horrible mess
             MouseArea {
                 anchors.fill: parent
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
+
+                // TODO: Clean up and refactor this horrible, horrible mess
                 onClicked: {
                     if (mouse.button === Qt.LeftButton && Plasmoid.configuration.leftClickAction != 0) {
                         if (Plasmoid.configuration.leftClickAction == 1) {
@@ -73,9 +76,44 @@ GridLayout {
                             if (pagerModel.currentPage > 0) {
                                 pagerModel.changePage(pagerModel.currentPage - 1);
                             } else if (Plasmoid.configuration.desktopWrapOn) {
-                                pagerModel.changePage(pagerModel.count -1);
+                                pagerModel.changePage(pagerModel.count - 1);
                             }
                         }
+                    }
+                }
+
+                // TODO: Clean up and refactor this not-quite-as-horrible mess
+                onWheel: {
+                    // TODO: Add user option to invert direction of y-axis scroll
+                    scrollWheelDelta += wheel.angleDelta.x || wheel.angleDelta.y;
+
+                    let wheelStep = 0
+
+                    while (scrollWheelDelta <= 120) {
+                        scrollWheelDelta += 120;
+                        wheelStep--;
+                    }
+
+                    while (scrollWheelDelta >= 120) {
+                        scrollWheelDelta -= 120;
+                        wheelStep++;
+                    }
+
+                    while (wheelStep !== 0) {
+                        if (wheelStep < 0) {
+                            if (pagerModel.currentPage < pagerModel.count - 1) {
+                                pagerModel.changePage(pagerModel.currentPage + 1);
+                            } else if (Plasmoid.configuration.desktopWrapOn) {
+                                pagerModel.changePage(0);
+                            }
+                        } else {
+                            if (pagerModel.currentPage > 0) {
+                                pagerModel.changePage(pagerModel.currentPage - 1);
+                            } else if (Plasmoid.configuration.desktopWrapOn) {
+                                pagerModel.changePage(pagerModel.count - 1);
+                            }
+                        }
+                        wheelStep += (wheelStep < 0) ? 1 : -1;
                     }
                 }
             }
