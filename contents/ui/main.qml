@@ -17,8 +17,20 @@ GridLayout {
 
     property int scrollWheelDelta: 0
 
-    rows: pagerModel.layoutRows
-    columns: Math.ceil(pagerModel.count / pagerModel.layoutRows)
+    rows: {
+        if (Plasmoid.configuration.singleRow) {
+            return 1;
+        } else {
+            return pagerModel.layoutRows;
+        }
+    }
+    columns: {
+        if (Plasmoid.configuration.singleRow) {
+            return pagerModel.count;
+        } else {
+            return Math.ceil(pagerModel.count / pagerModel.layoutRows);
+        }
+    }
     columnSpacing: 0
     rowSpacing: 0
 
@@ -84,36 +96,38 @@ GridLayout {
 
                 // TODO: Clean up and refactor this not-quite-as-horrible mess
                 onWheel: {
-                    // TODO: Add user option to invert direction of y-axis scroll
-                    scrollWheelDelta += wheel.angleDelta.x || wheel.angleDelta.y;
-
-                    let wheelStep = 0
-
-                    while (scrollWheelDelta <= 120) {
-                        scrollWheelDelta += 120;
-                        wheelStep--;
-                    }
-
-                    while (scrollWheelDelta >= 120) {
-                        scrollWheelDelta -= 120;
-                        wheelStep++;
-                    }
-
-                    while (wheelStep !== 0) {
-                        if (wheelStep < 0) {
-                            if (pagerModel.currentPage < pagerModel.count - 1) {
-                                pagerModel.changePage(pagerModel.currentPage + 1);
-                            } else if (Plasmoid.configuration.desktopWrapOn) {
-                                pagerModel.changePage(0);
-                            }
-                        } else {
-                            if (pagerModel.currentPage > 0) {
-                                pagerModel.changePage(pagerModel.currentPage - 1);
-                            } else if (Plasmoid.configuration.desktopWrapOn) {
-                                pagerModel.changePage(pagerModel.count - 1);
-                            }
+                    if (!Plasmoid.configuration.scrollWheelOff) {
+                        // TODO: Add user option to invert direction of y-axis scroll
+                        scrollWheelDelta += wheel.angleDelta.x || wheel.angleDelta.y;
+                        
+                        let wheelStep = 0
+                        
+                        while (scrollWheelDelta <= 120) {
+                            scrollWheelDelta += 120;
+                            wheelStep--;
                         }
-                        wheelStep += (wheelStep < 0) ? 1 : -1;
+                        
+                        while (scrollWheelDelta >= 120) {
+                            scrollWheelDelta -= 120;
+                            wheelStep++;
+                        }
+                        
+                        while (wheelStep !== 0) {
+                            if (wheelStep < 0) {
+                                if (pagerModel.currentPage < pagerModel.count - 1) {
+                                    pagerModel.changePage(pagerModel.currentPage + 1);
+                                } else if (Plasmoid.configuration.desktopWrapOn) {
+                                    pagerModel.changePage(0);
+                                }
+                            } else {
+                                if (pagerModel.currentPage > 0) {
+                                    pagerModel.changePage(pagerModel.currentPage - 1);
+                                } else if (Plasmoid.configuration.desktopWrapOn) {
+                                    pagerModel.changePage(pagerModel.count - 1);
+                                }
+                            }
+                            wheelStep += (wheelStep < 0) ? 1 : -1;
+                        }
                     }
                 }
             }

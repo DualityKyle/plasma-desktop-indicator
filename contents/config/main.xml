@@ -31,8 +31,12 @@
       <default>false</default>
     </entry>
     <entry name="desktopWrapOn" type="Bool">
-      <label>Whether the desktop navigation stops at the end or wraps around</label>
+      <label>Whether the desktop navigation stops at the end or wraps around.</label>
       <default>false</default>
+    </entry>
+    <entry name="singleRow" type="Bool">
+      <label>Whether the widget displays in a single row, or follows Plasma's configuration.</label>
+      <default>true</default>
     </entry>
   </group>
 </kcfg>

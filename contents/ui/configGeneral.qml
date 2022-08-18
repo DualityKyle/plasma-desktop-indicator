@@ -20,6 +20,7 @@ Kirigami.FormLayout {
 
     property alias cfg_scrollWheelOff: scrollWheelOff.checked
     property alias cfg_desktopWrapOn: desktopWrapOn.checked
+    property alias cfg_singleRow: singleRow.checked
 
     QtLayouts.RowLayout {
         Kirigami.FormData.label: i18n("Left click action:")
@@ -88,6 +89,25 @@ Kirigami.FormLayout {
             text: i18n("Wraparound")
         }
     }
+
+    Item {
+        Kirigami.FormData.isSection: true
+    }
+
+    QtLayouts.ColumnLayout {
+        Kirigami.FormData.label: i18n("Desktop Rows:")
+        Kirigami.FormData.buddyFor: singleRow
+
+        QC2.RadioButton {
+            id: singleRow
+            text: i18n("Single row")
+        }
+
+        QC2. RadioButton {
+            id: multiRow
+            text: i18n("Follow Plasma setting")
+        }
+    }
     
     Component.onCompleted: {
         if (!Plasmoid.configuration.scrollWheelOff) {
@@ -95,6 +115,9 @@ Kirigami.FormLayout {
         }
         if (!Plasmoid.configuration.desktopWrapOn) {
             desktopWrapOff.checked = true;
+        }
+        if (!Plasmoid.configuration.singleRow) {
+            multiRow.checked = true;
         }
     }
 }
