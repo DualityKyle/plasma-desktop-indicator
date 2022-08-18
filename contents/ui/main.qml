@@ -42,11 +42,41 @@ GridLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.minimumWidth: PlasmaCore.Theme.defaultFont.pixelSize
-            
+
+            // TODO: Clean up and refactor this horrible, horrible mess
             MouseArea {
                 anchors.fill: parent
+                acceptedButtons: Qt.LeftButton | Qt.RightButton
                 onClicked: {
-                    pagerModel.changePage(pagerModel.currentPage + 1);
+                    if (mouse.button === Qt.LeftButton && Plasmoid.configuration.leftClickAction != 0) {
+                        if (Plasmoid.configuration.leftClickAction == 1) {
+                            if (pagerModel.currentPage < pagerModel.count - 1) {
+                                pagerModel.changePage(pagerModel.currentPage + 1);
+                            } else if (Plasmoid.configuration.desktopWrapOn) {
+                                pagerModel.changePage(0);
+                            }
+                        } else if (Plasmoid.configuration.leftClickAction == 2) {
+                            if (pagerModel.currentPage > 0) {
+                                pagerModel.changePage(pagerModel.currentPage - 1);
+                            } else if (Plasmoid.configuration.desktopWrapOn) {
+                                pagerModel.changePage(pagerModel.count - 1);
+                            }
+                        }
+                    } else if (mouse.button === Qt.RightButton && Plasmoid.configuration.rightClickAction != 0) {
+                        if (Plasmoid.configuration.rightClickAction == 1) {
+                            if (pagerModel.currentPage < pagerModel.count - 1) {
+                                pagerModel.changePage(pagerModel.currentPage + 1);
+                            } else if (Plasmoid.configuration.desktopWrapOn) {
+                                pagerModel.changePage(0);
+                            }
+                        } else if (Plasmoid.configuration.rightClickAction == 2) {
+                            if (pagerModel.currentPage > 0) {
+                                pagerModel.changePage(pagerModel.currentPage - 1);
+                            } else if (Plasmoid.configuration.desktopWrapOn) {
+                                pagerModel.changePage(pagerModel.count -1);
+                            }
+                        }
+                    }
                 }
             }
             
