@@ -36,7 +36,15 @@
     </entry>
     <entry name="singleRow" type="Bool">
       <label>Whether the widget displays in a single row, or follows Plasma's configuration.</label>
-      <default>true</default>
+      <default>false</default>
+    </entry>
+    <entry name="dotSize" type="Enum">
+      <label>Choose whether the indicator dot size uses theme default, scales with panel size, or a fixed custom size.</label>
+      <default>0</default>
+    </entry>
+    <entry name="dotSizeCustom" type="Int">
+      <label>For fixed indicator dot size, select the size in pixels.</label>
+      <default></default>
     </entry>
   </group>
 </kcfg>

@@ -55,7 +55,22 @@ GridLayout {
             color: "transparent"
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.minimumWidth: PlasmaCore.Theme.defaultFont.pixelSize
+            Layout.minimumWidth: {
+                if (Plasmoid.configuration.dotSize == 0) {
+                    return PlasmaCore.Theme.defaultFont.pixelSize;
+                } else if (Plasmoid.configuration.dotSize == 1) {
+                    return 0;
+                } else {
+                    return Plasmoid.configuration.dotSizeCustom;
+                }
+            }
+            Layout.minimumHeight: {
+                if (!Plasmoid.configuration.dotSize == 2) {
+                    return 0;
+                } else {
+                    return Plasmoid.configuration.dotSizeCustom;
+                }
+            }
 
             MouseArea {
                 anchors.fill: parent
@@ -136,6 +151,15 @@ GridLayout {
                 id: inidicatorDot
                 
                 anchors.centerIn: parent
+                font.pixelSize: {
+                    if (Plasmoid.configuration.dotSize == 0) {
+                        return PlasmaCore.Theme.defaultFont.pixelSize;
+                    } else if (Plasmoid.configuration.dotSize == 1) {
+                        return Math.min(parent.height, parent.width);
+                    } else {
+                        return Plasmoid.configuration.dotSizeCustom;
+                    }
+                }
                 text: {
                     if (index == pagerModel.currentPage) {
                         return "●";

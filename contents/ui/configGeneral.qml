@@ -9,6 +9,7 @@ import QtQuick.Controls 2.5 as QC2
 import QtQuick.Layouts 1.12 as QtLayouts
 import org.kde.kirigami 2.4 as Kirigami
 import org.kde.plasma.plasmoid 2.0
+import org.kde.plasma.core 2.0 as PlasmaCore
 
 Kirigami.FormLayout {
     id: generalPage
@@ -21,6 +22,9 @@ Kirigami.FormLayout {
     property alias cfg_scrollWheelOff: scrollWheelOff.checked
     property alias cfg_desktopWrapOn: desktopWrapOn.checked
     property alias cfg_singleRow: singleRow.checked
+
+    property alias cfg_dotSize: dotSize.currentIndex
+    property alias cfg_dotSizeCustom: dotSizeCustom.value
 
     QtLayouts.RowLayout {
         Kirigami.FormData.label: i18n("Left click action:")
@@ -103,10 +107,41 @@ Kirigami.FormLayout {
             text: i18n("Single row")
         }
 
-        QC2. RadioButton {
+        QC2.RadioButton {
             id: multiRow
             text: i18n("Follow Plasma setting")
         }
+    }
+
+    Item {
+        Kirigami.FormData.isSection: true
+    }
+
+    QtLayouts.RowLayout {
+        Kirigami.FormData.label: i18n("Indicator Dot Size:")
+
+        QC2.ComboBox {
+            id: dotSize
+            model: [
+                i18n("Default"),
+                i18n("Scale with panel size"),
+                i18n("Custom Size")
+            ]
+        }
+
+        QC2.SpinBox {
+            id: dotSizeCustom
+            textFromValue: function(value) {
+                return i18n("%1 px", value)
+            }
+            valueFromText: function(text) {
+                return parseInt(text)
+            }
+            from: PlasmaCore.Theme.defaultFont.pixelSize
+            to: 72
+            enabled: dotSize.currentIndex == 2
+        }
+
     }
     
     Component.onCompleted: {
