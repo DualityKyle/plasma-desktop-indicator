@@ -4,11 +4,14 @@ An indicator/switcher for your virtual desktops/workspaces (also known as a "pag
 
 As a former GNOME user, I was a huge fan of the Workspace Indicator extension found at <https://extensions.gnome.org/extension/3952/workspace-indicator/>, so I decided to re-create it for Plasma to help me feel at home. I enjoy the minimalist style (hence my naming choice), and I'm hoping you do too!
 
-***NOTE: For now, this applet simply shows the current workspace and available workspaces and nothing else. I will be adding more features in the coming weeks! If you find any bugs or would like to see a feature added, please open an issue!***
-
-### To-Do List:
-* Add settings menu
-* Click/scroll to advance workspaces
-* Vertical panel support
+### Features:
+* Customisable left-click/right-click actions
+* Switch desktops by scrolling widget
+* Workspace wraparound
+* Show desktops in a single row or follow Plasma setting
 * Customisable indicator size
+
+### To-Do:
 * Support for multi-monitor setups
+
+*If you find any bugs, or if there is a feature that you'd like to see, please don't hesitate to open an issue on the GitHub repo and I'll try to get to it as soon as I can!*
