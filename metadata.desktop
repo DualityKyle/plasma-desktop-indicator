@@ -8,7 +8,7 @@ ServiceTypes=Plasma/Applet
 
 X-KDE-PluginInfo-Author=Kyle McGrath
 X-KDE-PluginInfo-Email=dualitykyle@pm.me
-X-KDE-PluginInfo-Version=2.0
+X-KDE-PluginInfo-Version=2.1
 X-KDE-PluginInfo-Website=https://github.com/DualityKyle/plasma-desktop-indicator
 X-KDE-PluginInfo-Category=Windows and Tasks
 X-KDE-PluginInfo-License=GPL-3.0+

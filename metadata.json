@@ -16,7 +16,7 @@
         "ServiceTypes": [
             "Plasma/Applet"
         ],
-        "Version": "2.0",
+        "Version": "2.1",
         "Website": "https://github.com/DualityKyle/plasma-desktop-indicator"
     },
     "X-Plasma-API": "declarativeappletscript",
