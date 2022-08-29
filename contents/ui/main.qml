@@ -74,11 +74,24 @@ GridLayout {
 
             MouseArea {
                 anchors.fill: parent
-                acceptedButtons: Qt.LeftButton | Qt.RightButton
+                acceptedButtons: {
+                    if (Plasmoid.configuration.rightClickAction == 0) {
+                        return Qt.LeftButton;
+                    } else {
+                        return Qt.LeftButton | Qt.RightButton;
+                    }
+                }
+                z: {
+                    if(Plasmoid.configuration.leftClickAction != 3) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
 
                 // TODO: Clean up and refactor this horrible, horrible mess
                 onClicked: {
-                    if (mouse.button === Qt.LeftButton && Plasmoid.configuration.leftClickAction != 0) {
+                    if (mouse.button === Qt.LeftButton && (Plasmoid.configuration.leftClickAction != 0 || Plasmoid.configuration.leftClickAction != 3)) {
                         if (Plasmoid.configuration.leftClickAction == 1) {
                             if (pagerModel.currentPage < pagerModel.count - 1) {
                                 pagerModel.changePage(pagerModel.currentPage + 1);
@@ -92,7 +105,7 @@ GridLayout {
                                 pagerModel.changePage(pagerModel.count - 1);
                             }
                         }
-                    } else if (mouse.button === Qt.RightButton && Plasmoid.configuration.rightClickAction != 0) {
+                    } else if (mouse.button === Qt.RightButton && (Plasmoid.configuration.rightClickAction != 0 || Plasmoid.configuration.leftClickAction != 3)) {
                         if (Plasmoid.configuration.rightClickAction == 1) {
                             if (pagerModel.currentPage < pagerModel.count - 1) {
                                 pagerModel.changePage(pagerModel.currentPage + 1);
@@ -165,6 +178,21 @@ GridLayout {
                         return "●";
                     } else {
                         return "○";
+                    }
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        if (Plasmoid.configuration.leftClickAction == 3) {
+                            pagerModel.changePage(index);
+                        }
+                    }
+                    z: {
+                        if (Plasmoid.configuration.leftClickAction != 3) {
+                            return 0;
+                        } else {
+                            return 1;
+                        }
                     }
                 }
             }

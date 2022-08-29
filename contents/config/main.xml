@@ -12,6 +12,7 @@
         <choice name="None" />
         <choice name="NextDesktop" />
         <choice name="PrevDesktop" />
+        <choice name="GoToClicked" />
         <choice name="ShowOverview" />
       </choices>
       <default>1</default>

@@ -35,6 +35,7 @@ Kirigami.FormLayout {
                 i18n("Do nothing"),
                 i18n("Switch to next desktop"),
                 i18n("Switch to previous desktop"),
+                i18n("Go to clicked desktop"),
                 i18n("Show desktop overview"),
             ]
             onActivated: cfg_leftClickAction = currentIndex
@@ -53,6 +54,7 @@ Kirigami.FormLayout {
                 i18n("Show desktop overview"),
             ]
             onActivated: cfg_rightClickAction = currentIndex
+            enabled: leftClickAction.currentIndex != 3 
         }
     }
     
