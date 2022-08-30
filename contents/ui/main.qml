@@ -59,7 +59,7 @@ GridLayout {
                 if (Plasmoid.configuration.dotSize == 0) {
                     return PlasmaCore.Theme.defaultFont.pixelSize;
                 } else if (Plasmoid.configuration.dotSize == 1) {
-                    return 0;
+                    return indicatorDot.font.pixelSize;
                 } else {
                     return Plasmoid.configuration.dotSizeCustom;
                 }
@@ -161,14 +161,15 @@ GridLayout {
             }
             
             PlasmaComponents.Label {
-                id: inidicatorDot
+                id: indicatorDot
                 
                 anchors.centerIn: parent
                 font.pixelSize: {
                     if (Plasmoid.configuration.dotSize == 0) {
                         return PlasmaCore.Theme.defaultFont.pixelSize;
                     } else if (Plasmoid.configuration.dotSize == 1) {
-                        return Math.min(parent.height, parent.width);
+                        //TODO: Consider adding state support for vertical panel users
+                        return parent.height;
                     } else {
                         return Plasmoid.configuration.dotSizeCustom;
                     }
