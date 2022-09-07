@@ -104,6 +104,8 @@ GridLayout {
                             } else if (Plasmoid.configuration.desktopWrapOn) {
                                 pagerModel.changePage(pagerModel.count - 1);
                             }
+                        } else if (Plasmoid.configuration.leftClickAction == 4) {
+                            exposeDesktop();
                         }
                     } else if (mouse.button === Qt.RightButton && (Plasmoid.configuration.rightClickAction != 0 || Plasmoid.configuration.leftClickAction != 3)) {
                         if (Plasmoid.configuration.rightClickAction == 1) {
@@ -206,5 +208,20 @@ GridLayout {
                 }
             }
         }
+    }
+
+    PlasmaCore.DataSource {
+        id: executable
+        engine: "executable"
+        connectedSources: []
+        onNewData: disconnectSource(sourceName)
+
+        function exec(cmd) {
+            executable.connectSource(cmd)
+        }
+    }
+
+    function exposeDesktop() {
+        executable.exec('qdbus org.kde.kglobalaccel /component/kwin invokeShortcut Overview')
     }
 }
