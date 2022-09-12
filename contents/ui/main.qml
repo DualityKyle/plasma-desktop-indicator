@@ -124,7 +124,7 @@ GridLayout {
 
                 // TODO: Clean up and refactor this not-quite-as-horrible mess
                 onWheel: {
-                    if (!Plasmoid.configuration.scrollWheelOff) {
+                    if (Plasmoid.configuration.scrollWheelOn) {
                         // TODO: Add user option to invert direction of y-axis scroll
                         scrollWheelDelta += wheel.angleDelta.x || wheel.angleDelta.y;
                         
@@ -175,10 +175,18 @@ GridLayout {
                     }
                 }
                 text: {
-                    if (index == pagerModel.currentPage) {
-                        return "●";
+                    if (Plasmoid.configuration.dotType == 0) {
+                        if (index == pagerModel.currentPage) {
+                            return "●";
+                        } else {
+                            return "○";
+                        }
                     } else {
-                        return "○";
+                        if (index == pagerModel.currentPage) {
+                            return Plasmoid.configuration.activeDot;
+                        } else {
+                            return Plasmoid.configuration.inactiveDot;
+                        }
                     }
                 }
                 MouseArea {

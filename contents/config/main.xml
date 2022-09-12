@@ -27,9 +27,9 @@
       </choices>
       <default>0</default>
     </entry>
-    <entry name="scrollWheelOff" type="Bool">
+    <entry name="scrollWheelOn" type="Bool">
       <label>Whether scrolling the mouse on the widget changes the current desktop.</label>
-      <default>false</default>
+      <default>true</default>
     </entry>
     <entry name="desktopWrapOn" type="Bool">
       <label>Whether the desktop navigation stops at the end or wraps around.</label>
@@ -46,6 +46,18 @@
     <entry name="dotSizeCustom" type="Int">
       <label>For fixed indicator dot size, select the size in pixels.</label>
       <default></default>
+    </entry>
+    <entry name="dotType" type="Enum">
+      <label>Choose whether to use the default dot indicator, or a custom character.</label>
+      <default>0</default>
+    </entry>
+    <entry name="activeDot" type="string">
+      <label>The unicode character used for the active desktop indicator</label>
+      <default>●</default>
+    </entry>
+    <entry name="inactiveDot" type="string">
+      <label>The unicode character used for the inactive desktop indicator</label>
+      <default>○</default>
     </entry>
   </group>
 </kcfg>
