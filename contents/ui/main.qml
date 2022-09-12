@@ -120,6 +120,8 @@ GridLayout {
                             } else if (Plasmoid.configuration.desktopWrapOn) {
                                 pagerModel.changePage(pagerModel.count - 1);
                             }
+                        } else if (Plasmoid.configuration.rightClickAction == 3) {
+                            exposeDesktop();
                         }
                     }
                 }
