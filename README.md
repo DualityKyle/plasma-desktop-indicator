@@ -12,6 +12,7 @@ As a former GNOME user, I was a huge fan of the Workspace Indicator extension fo
 * Customisable indicator size
 
 ### To-Do:
+* Add Plasma 6.x support
 * Support for multi-monitor setups
 
 *If you find any bugs, or if there is a feature that you'd like to see, please don't hesitate to open an issue on the GitHub repo and I'll try to get to it as soon as I can!*
