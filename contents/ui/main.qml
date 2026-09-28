@@ -10,50 +10,42 @@ import org.kde.plasma.plasmoid
 import org.kde.plasma.components as PlasmaComponents
 import org.kde.plasma.plasma5support as PlasmaSupport
 import org.kde.kirigami as Kirigami
-import org.kde.plasma.private.pager
+import org.kde.taskmanager as TaskManager
 
 PlasmoidItem {
   id: root
 
   property int scrollWheelDelta: 0
 
+  readonly property int currentDesktopIndex: desktopInfo.desktopIds.indexOf(desktopInfo.currentDesktop)
+
+  TaskManager.VirtualDesktopInfo {
+    id: desktopInfo
+  }
+
   preferredRepresentation: fullRepresentation
 
-  rows: {
-    if (Plasmoid.configuration.singleRow) {
-      return 1;
-    } else {
-      return pagerModel.layoutRows;
+  fullRepresentation: GridLayout {
+    rows: {
+      if (Plasmoid.configuration.singleRow) {
+        return 1;
+      } else {
+        return desktopInfo.desktopLayoutRows;
+      }
     }
-  }
-  columns: {
-    if (Plasmoid.configuration.singleRow) {
-      return pagerModel.count;
-    } else {
-      return Math.ceil(pagerModel.count / pagerModel.layoutRows);
+    columns: {
+      if (Plasmoid.configuration.singleRow) {
+        return desktopInfo.numberOfDesktops;
+      } else {
+        return Math.ceil(desktopInfo.numberOfDesktops / desktopInfo.desktopLayoutRows);
+      }
     }
-  }
-  columnSpacing: 0
-  rowSpacing: 0
-
-  PagerModel {
-    id: pagerModel
-
-    enabled: root.visible
-    screenGeometry: plasmoid.screenGeometry
-
-    pagerType: PagerModel.VirtualDesktops
-  }
-
-  fullRepresentation: GridLayou {
-    rows: Plasmoid.configuration.singleRow ? 1 : pagerModel.layoutRows
-    columns: Plasmoid.configuration.singleRow ? pagerModel.count : Math.ceil(pagerModel.count / pagerModel.layoutRows)
     columnSpacing: 0
     rowSpacing: 0
 
     Repeater {
       id: indicatorRepeater
-      model: pagerModel.count
+      model: desktopInfo.numberOfDesktops
 
       Rectangle {
         id: indicatorContainer
@@ -96,35 +88,35 @@ PlasmoidItem {
           }
 
           // TODO: Clean up and refactor this horrible, horrible mess
-          onClicked: (mouse) => {
+          onClicked: mouse => {
             if (mouse.button === Qt.LeftButton && (Plasmoid.configuration.leftClickAction != 0 || Plasmoid.configuration.leftClickAction != 3)) {
               if (Plasmoid.configuration.leftClickAction == 1) {
-                if (pagerModel.currentPage < pagerModel.count - 1) {
-                  pagerModel.changePage(pagerModel.currentPage + 1);
+                if (root.currentDesktopIndex < desktopInfo.numberOfDesktops - 1) {
+                  desktopInfo.changePage(root.currentDesktopIndex + 1);
                 } else if (Plasmoid.configuration.desktopWrapOn) {
-                  pagerModel.changePage(0);
+                  desktopInfo.changePage(0);
                 }
               } else if (Plasmoid.configuration.leftClickAction == 2) {
-                if (pagerModel.currentPage > 0) {
-                  pagerModel.changePage(pagerModel.currentPage - 1);
+                if (root.currentDesktopIndex > 0) {
+                  desktopInfo.changePage(root.currentDesktopIndex - 1);
                 } else if (Plasmoid.configuration.desktopWrapOn) {
-                  pagerModel.changePage(pagerModel.count - 1);
+                  desktopInfo.changePage(desktopInfo.numberOfDesktops - 1);
                 }
               } else if (Plasmoid.configuration.leftClickAction == 4) {
                 exposeDesktop();
               }
             } else if (mouse.button === Qt.RightButton && (Plasmoid.configuration.rightClickAction != 0 || Plasmoid.configuration.leftClickAction != 3)) {
               if (Plasmoid.configuration.rightClickAction == 1) {
-                if (pagerModel.currentPage < pagerModel.count - 1) {
-                  pagerModel.changePage(pagerModel.currentPage + 1);
+                if (root.currentDesktopIndex < desktopInfo.numberOfDesktops - 1) {
+                  desktopInfo.changePage(root.currentDesktopIndex + 1);
                 } else if (Plasmoid.configuration.desktopWrapOn) {
-                  pagerModel.changePage(0);
+                  desktopInfo.changePage(0);
                 }
               } else if (Plasmoid.configuration.rightClickAction == 2) {
-                if (pagerModel.currentPage > 0) {
-                  pagerModel.changePage(pagerModel.currentPage - 1);
+                if (root.currentDesktopIndex > 0) {
+                  desktopInfo.changePage(root.currentDesktopIndex - 1);
                 } else if (Plasmoid.configuration.desktopWrapOn) {
-                  pagerModel.changePage(pagerModel.count - 1);
+                  desktopInfo.changePage(desktopInfo.numberOfDesktops - 1);
                 }
               } else if (Plasmoid.configuration.rightClickAction == 3) {
                 exposeDesktop();
@@ -133,7 +125,7 @@ PlasmoidItem {
           }
 
           // TODO: Clean up and refactor this not-quite-as-horrible mess
-          onWheel: (wheel) => {
+          onWheel: wheel => {
             if (Plasmoid.configuration.scrollWheelOn) {
               // TODO: Add user option to invert direction of y-axis scroll
               scrollWheelDelta += wheel.angleDelta.x || wheel.angleDelta.y;
@@ -152,16 +144,16 @@ PlasmoidItem {
 
               while (wheelStep !== 0) {
                 if (wheelStep < 0) {
-                  if (pagerModel.currentPage < pagerModel.count - 1) {
-                    pagerModel.changePage(pagerModel.currentPage + 1);
+                  if (root.currentDesktopIndex < desktopInfo.numberOfDesktops - 1) {
+                    desktopInfo.changePage(root.currentDesktopIndex + 1);
                   } else if (Plasmoid.configuration.desktopWrapOn) {
-                    pagerModel.changePage(0);
+                    desktopInfo.changePage(0);
                   }
                 } else {
-                  if (pagerModel.currentPage > 0) {
-                    pagerModel.changePage(pagerModel.currentPage - 1);
+                  if (root.currentDesktopIndex > 0) {
+                    desktopInfo.changePage(root.currentDesktopIndex - 1);
                   } else if (Plasmoid.configuration.desktopWrapOn) {
-                    pagerModel.changePage(pagerModel.count - 1);
+                    desktopInfo.changePage(desktopInfo.numberOfDesktops - 1);
                   }
                 }
                 wheelStep += (wheelStep < 0) ? 1 : -1;
@@ -186,13 +178,13 @@ PlasmoidItem {
           }
           text: {
             if (Plasmoid.configuration.dotType == 0) {
-              if (index == pagerModel.currentPage) {
+              if (index == root.currentDesktopIndex) {
                 return "●";
               } else {
                 return "○";
               }
             } else {
-              if (index == pagerModel.currentPage) {
+              if (index == root.currentDesktopIndex) {
                 return Plasmoid.configuration.activeDot;
               } else {
                 return Plasmoid.configuration.inactiveDot;
@@ -201,9 +193,9 @@ PlasmoidItem {
           }
           MouseArea {
             anchors.fill: parent
-            onClicked: (mouse) => {
+            onClicked: mouse => {
               if (Plasmoid.configuration.leftClickAction == 3) {
-                pagerModel.changePage(index);
+                desktopInfo.changePage(index);
               }
             }
             z: {
@@ -223,7 +215,7 @@ PlasmoidItem {
     id: executable
     engine: "executable"
     connectedSources: []
-    onNewData: (sourceName) => disconnectSource(sourceName)
+    onNewData: sourceName => disconnectSource(sourceName)
 
     function exec(cmd) {
       executable.connectSource(cmd);
