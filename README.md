@@ -14,6 +14,7 @@ As a former GNOME user, I was a huge fan of the Workspace Indicator extension fo
 * Customisable indicator size
 
 ### To-Do:
+* Refactor entire plasmoid for easier maintenance/addition of features
 * Add customisable spacing between indicators
 * Add colour options
 * Support for multi-monitor setups
