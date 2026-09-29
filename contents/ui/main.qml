@@ -1,5 +1,5 @@
 /*
-    SPDX-FileCopyrightText: 2022 Kyle McGrath <dualitykyle@pm.me>
+    SPDX-FileCopyrightText: 2022-2026 Kyle McGrath <dualitykyle@pm.me>
 
     SPDX-License-Identifier: GPL-3.0-or-later
 */
@@ -21,6 +21,26 @@ PlasmoidItem {
 
   TaskManager.VirtualDesktopInfo {
     id: desktopInfo
+  }
+
+  /* org.kde.taskmanager's requestActivate method is not Q_INVOKABLE
+     so instead we call KWin directly to select virtual desktops */
+  function activateDesktopAt(index) {
+    const desktopId = desktopInfo.desktopIds[index];
+
+    if (desktopId === undefined || desktopId === null) {
+      return;
+    }
+    
+    executable.exec(
+      "gdbus call --session "
+      + "--dest org.kde.KWin "
+      + "--object-path /VirtualDesktopManager "
+      + "--method org.freedesktop.DBus.Properties.Set "
+      + "org.kde.KWin.VirtualDesktopManager "
+      + "current "
+      + "\"<'" + desktopId + "'>\""
+    )
   }
 
   preferredRepresentation: fullRepresentation
@@ -92,15 +112,15 @@ PlasmoidItem {
             if (mouse.button === Qt.LeftButton && (Plasmoid.configuration.leftClickAction != 0 || Plasmoid.configuration.leftClickAction != 3)) {
               if (Plasmoid.configuration.leftClickAction == 1) {
                 if (root.currentDesktopIndex < desktopInfo.numberOfDesktops - 1) {
-                  desktopInfo.changePage(root.currentDesktopIndex + 1);
+                  root.activateDesktopAt(root.currentDesktopIndex + 1);
                 } else if (Plasmoid.configuration.desktopWrapOn) {
-                  desktopInfo.changePage(0);
+                  root.activateDesktopAt(0);
                 }
               } else if (Plasmoid.configuration.leftClickAction == 2) {
                 if (root.currentDesktopIndex > 0) {
-                  desktopInfo.changePage(root.currentDesktopIndex - 1);
+                  root.activateDesktopAt(root.currentDesktopIndex - 1);
                 } else if (Plasmoid.configuration.desktopWrapOn) {
-                  desktopInfo.changePage(desktopInfo.numberOfDesktops - 1);
+                  root.activateDesktopAt(desktopInfo.numberOfDesktops - 1);
                 }
               } else if (Plasmoid.configuration.leftClickAction == 4) {
                 exposeDesktop();
@@ -108,15 +128,15 @@ PlasmoidItem {
             } else if (mouse.button === Qt.RightButton && (Plasmoid.configuration.rightClickAction != 0 || Plasmoid.configuration.leftClickAction != 3)) {
               if (Plasmoid.configuration.rightClickAction == 1) {
                 if (root.currentDesktopIndex < desktopInfo.numberOfDesktops - 1) {
-                  desktopInfo.changePage(root.currentDesktopIndex + 1);
+                  root.activateDesktopAt(root.currentDesktopIndex + 1);
                 } else if (Plasmoid.configuration.desktopWrapOn) {
-                  desktopInfo.changePage(0);
+                  root.activateDesktopAt(0);
                 }
               } else if (Plasmoid.configuration.rightClickAction == 2) {
                 if (root.currentDesktopIndex > 0) {
-                  desktopInfo.changePage(root.currentDesktopIndex - 1);
+                  root.activateDesktopAt(root.currentDesktopIndex - 1);
                 } else if (Plasmoid.configuration.desktopWrapOn) {
-                  desktopInfo.changePage(desktopInfo.numberOfDesktops - 1);
+                  root.activateDesktopAt(desktopInfo.numberOfDesktops - 1);
                 }
               } else if (Plasmoid.configuration.rightClickAction == 3) {
                 exposeDesktop();
@@ -132,7 +152,7 @@ PlasmoidItem {
 
               let wheelStep = 0;
 
-              while (scrollWheelDelta <= 120) {
+              while (scrollWheelDelta <= -120) {
                 scrollWheelDelta += 120;
                 wheelStep--;
               }
@@ -145,15 +165,15 @@ PlasmoidItem {
               while (wheelStep !== 0) {
                 if (wheelStep < 0) {
                   if (root.currentDesktopIndex < desktopInfo.numberOfDesktops - 1) {
-                    desktopInfo.changePage(root.currentDesktopIndex + 1);
+                    root.activateDesktopAt(root.currentDesktopIndex + 1);
                   } else if (Plasmoid.configuration.desktopWrapOn) {
-                    desktopInfo.changePage(0);
+                    root.activateDesktopAt(0);
                   }
                 } else {
                   if (root.currentDesktopIndex > 0) {
-                    desktopInfo.changePage(root.currentDesktopIndex - 1);
+                    root.activateDesktopAt(root.currentDesktopIndex - 1);
                   } else if (Plasmoid.configuration.desktopWrapOn) {
-                    desktopInfo.changePage(desktopInfo.numberOfDesktops - 1);
+                    root.activateDesktopAt(desktopInfo.numberOfDesktops - 1);
                   }
                 }
                 wheelStep += (wheelStep < 0) ? 1 : -1;
@@ -195,7 +215,7 @@ PlasmoidItem {
             anchors.fill: parent
             onClicked: mouse => {
               if (Plasmoid.configuration.leftClickAction == 3) {
-                desktopInfo.changePage(index);
+                root.activateDesktopAt(index);
               }
             }
             z: {
