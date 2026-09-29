@@ -123,7 +123,7 @@ PlasmoidItem {
                   root.activateDesktopAt(desktopInfo.numberOfDesktops - 1);
                 }
               } else if (Plasmoid.configuration.leftClickAction == 4) {
-                exposeDesktop();
+                root.exposeDesktop();
               }
             } else if (mouse.button === Qt.RightButton && (Plasmoid.configuration.rightClickAction != 0 || Plasmoid.configuration.leftClickAction != 3)) {
               if (Plasmoid.configuration.rightClickAction == 1) {
@@ -139,7 +139,7 @@ PlasmoidItem {
                   root.activateDesktopAt(desktopInfo.numberOfDesktops - 1);
                 }
               } else if (Plasmoid.configuration.rightClickAction == 3) {
-                exposeDesktop();
+                root.exposeDesktop();
               }
             }
           }
