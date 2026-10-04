@@ -1,31 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
-      http://www.kde.org/standards/kcfg/1.0/kcfg.xsd">
-  <kcfgfile name=""/>
-
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0 http://www.kde.org/standards/kcfg/1.0/kcfg.xsd">
+  <kcfgfile name="" />
   <group name="General">
-    <entry name="leftClickAction" type="Enum">
+    <entry name="leftClickAction" type="String">
       <label>What happens when you left click on the widget.</label>
-      <choices name="Settings::leftClickAction">
-        <choice name="None" />
-        <choice name="NextDesktop" />
-        <choice name="PrevDesktop" />
-        <choice name="GoToClicked" />
-        <choice name="ShowOverview" />
-      </choices>
-      <default>1</default>
+      <default>next</default>
     </entry>
-    <entry name="rightClickAction" type="Enum">
+    <entry name="rightClickAction" type="String">
       <label>What happens when you right click on the widget.</label>
-      <choices name="Settings::rightClickAction">
-        <choice name="None" />
-        <choice name="NextDesktop" />
-        <choice name="PrevDesktop" />
-        <choice name="ShowOverview" />
-      </choices>
-      <default>0</default>
+      <default>none</default>
     </entry>
     <entry name="scrollWheelOn" type="Bool">
       <label>Whether scrolling the mouse on the widget changes the current desktop.</label>
@@ -37,27 +22,29 @@
     </entry>
     <entry name="singleRow" type="Bool">
       <label>Whether the widget displays in a single row, or follows Plasma's configuration.</label>
-      <default>false</default>
+      <default>true</default>
     </entry>
-    <entry name="dotSize" type="Enum">
-      <label>Choose whether the indicator dot size uses theme default, scales with panel size, or a fixed custom size.</label>
-      <default>0</default>
+  </group>
+  <group name="Appearance">
+    <entry name="dotStyle" type="String">
+      <label>What style to use for indicator dots</label>
+      <default>default</default>
     </entry>
-    <entry name="dotSizeCustom" type="Int">
-      <label>For fixed indicator dot size, select the size in pixels.</label>
-      <default></default>
-    </entry>
-    <entry name="dotType" type="Enum">
-      <label>Choose whether to use the default dot indicator, or a custom character.</label>
-      <default>0</default>
-    </entry>
-    <entry name="activeDot" type="string">
+    <entry name="activeDot" type="String">
       <label>The unicode character used for the active desktop indicator</label>
       <default>●</default>
     </entry>
-    <entry name="inactiveDot" type="string">
+    <entry name="inactiveDot" type="String">
       <label>The unicode character used for the inactive desktop indicator</label>
       <default>○</default>
+    </entry>
+    <entry name="indicatorSizeMode" type="String">
+      <label>How the widget renders the size of the indicators</label>
+      <default>theme</default>
+    </entry>
+    <entry name="indicatorCustomSize" type="Int">
+      <label>Indicator size in pixels when indicatorSizeMode is "custom".</label>
+      <default>14</default>
     </entry>
   </group>
 </kcfg>

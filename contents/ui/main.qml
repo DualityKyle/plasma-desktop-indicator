@@ -7,242 +7,79 @@
 import QtQuick
 import QtQuick.Layouts
 import org.kde.plasma.plasmoid
-import org.kde.plasma.components as PlasmaComponents
-import org.kde.plasma.plasma5support as PlasmaSupport
-import org.kde.kirigami as Kirigami
 import org.kde.taskmanager as TaskManager
 
 PlasmoidItem {
   id: root
 
-  property int scrollWheelDelta: 0
-
-  readonly property int currentDesktopIndex: desktopInfo.desktopIds.indexOf(desktopInfo.currentDesktop)
-
-  TaskManager.VirtualDesktopInfo {
-    id: desktopInfo
-  }
-
-  /* org.kde.taskmanager's requestActivate method is not Q_INVOKABLE
-     so instead we call KWin directly to select virtual desktops */
-  function activateDesktopAt(index) {
-    const desktopId = desktopInfo.desktopIds[index];
-
-    if (desktopId === undefined || desktopId === null) {
-      return;
-    }
-    
-    executable.exec(
-      "gdbus call --session "
-      + "--dest org.kde.KWin "
-      + "--object-path /VirtualDesktopManager "
-      + "--method org.freedesktop.DBus.Properties.Set "
-      + "org.kde.KWin.VirtualDesktopManager "
-      + "current "
-      + "\"<'" + desktopId + "'>\""
-    )
-  }
-
   preferredRepresentation: fullRepresentation
 
+  readonly property var cfg: Plasmoid.configuration
+  readonly property var indicatorType: ({
+    "dot": "indicatorTypes/dots.qml"
+  })
+
+  TaskManager.VirtualDesktopInfo { id: desktopInfo }
+  DesktopHandlers { id: actions; info: desktopInfo; cfg: root.cfg; }
+
   fullRepresentation: GridLayout {
-    rows: {
-      if (Plasmoid.configuration.singleRow) {
-        return 1;
-      } else {
-        return desktopInfo.desktopLayoutRows;
-      }
-    }
-    columns: {
-      if (Plasmoid.configuration.singleRow) {
-        return desktopInfo.numberOfDesktops;
-      } else {
-        return Math.ceil(desktopInfo.numberOfDesktops / desktopInfo.desktopLayoutRows);
-      }
-    }
+    rows: cfg.singleRow
+      ? 1
+      : desktopInfo.desktopLayoutRows;
+    columns: cfg.singleRow
+      ? desktopInfo.numberOfDesktops
+      : Math.ceil(desktopInfo.numberOfDesktops / desktopInfo.desktopLayoutRows);
     columnSpacing: 0
     rowSpacing: 0
 
+    WheelHandler {
+      // TO-DO: Add horizontal scrolling option for touchpad users
+      // TO-DO: Add option to invert scroll direction
+      enabled: root.cfg.scrollWheelOn
+      acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
+      onWheel: (event) => actions.handleWheel(event.angleDelta.x || event.angleDelta.y)
+    }
+
     Repeater {
-      id: indicatorRepeater
       model: desktopInfo.numberOfDesktops
 
       Rectangle {
-        id: indicatorContainer
+        id: indicator
 
         color: "transparent"
-        Layout.fillWidth: true
+        implicitWidth: indicatorContent.implicitWidth
+        Layout.minimumHeight: 0
         Layout.fillHeight: true
-        Layout.minimumWidth: {
-          if (Plasmoid.configuration.dotSize == 0) {
-            return Kirigami.Theme.defaultFont.pixelSize;
-          } else if (Plasmoid.configuration.dotSize == 1) {
-            return indicatorDot.font.pixelSize;
-          } else {
-            return Plasmoid.configuration.dotSizeCustom;
-          }
-        }
-        Layout.minimumHeight: {
-          if (!Plasmoid.configuration.dotSize == 2) {
-            return 0;
-          } else {
-            return Plasmoid.configuration.dotSizeCustom;
-          }
-        }
 
-        MouseArea {
-          anchors.fill: parent
-          acceptedButtons: {
-            if (Plasmoid.configuration.rightClickAction == 0) {
-              return Qt.LeftButton;
-            } else {
-              return Qt.LeftButton | Qt.RightButton;
-            }
-          }
-          z: {
-            if (Plasmoid.configuration.leftClickAction != 3) {
-              return 1;
-            } else {
-              return 0;
-            }
-          }
-
-          // TODO: Clean up and refactor this horrible, horrible mess
-          onClicked: mouse => {
-            if (mouse.button === Qt.LeftButton && (Plasmoid.configuration.leftClickAction != 0 || Plasmoid.configuration.leftClickAction != 3)) {
-              if (Plasmoid.configuration.leftClickAction == 1) {
-                if (root.currentDesktopIndex < desktopInfo.numberOfDesktops - 1) {
-                  root.activateDesktopAt(root.currentDesktopIndex + 1);
-                } else if (Plasmoid.configuration.desktopWrapOn) {
-                  root.activateDesktopAt(0);
-                }
-              } else if (Plasmoid.configuration.leftClickAction == 2) {
-                if (root.currentDesktopIndex > 0) {
-                  root.activateDesktopAt(root.currentDesktopIndex - 1);
-                } else if (Plasmoid.configuration.desktopWrapOn) {
-                  root.activateDesktopAt(desktopInfo.numberOfDesktops - 1);
-                }
-              } else if (Plasmoid.configuration.leftClickAction == 4) {
-                root.exposeDesktop();
-              }
-            } else if (mouse.button === Qt.RightButton && (Plasmoid.configuration.rightClickAction != 0 || Plasmoid.configuration.leftClickAction != 3)) {
-              if (Plasmoid.configuration.rightClickAction == 1) {
-                if (root.currentDesktopIndex < desktopInfo.numberOfDesktops - 1) {
-                  root.activateDesktopAt(root.currentDesktopIndex + 1);
-                } else if (Plasmoid.configuration.desktopWrapOn) {
-                  root.activateDesktopAt(0);
-                }
-              } else if (Plasmoid.configuration.rightClickAction == 2) {
-                if (root.currentDesktopIndex > 0) {
-                  root.activateDesktopAt(root.currentDesktopIndex - 1);
-                } else if (Plasmoid.configuration.desktopWrapOn) {
-                  root.activateDesktopAt(desktopInfo.numberOfDesktops - 1);
-                }
-              } else if (Plasmoid.configuration.rightClickAction == 3) {
-                root.exposeDesktop();
-              }
-            }
-          }
-
-          // TODO: Clean up and refactor this not-quite-as-horrible mess
-          onWheel: wheel => {
-            if (Plasmoid.configuration.scrollWheelOn) {
-              // TODO: Add user option to invert direction of y-axis scroll
-              scrollWheelDelta += wheel.angleDelta.x || wheel.angleDelta.y;
-
-              let wheelStep = 0;
-
-              while (scrollWheelDelta <= -120) {
-                scrollWheelDelta += 120;
-                wheelStep--;
-              }
-
-              while (scrollWheelDelta >= 120) {
-                scrollWheelDelta -= 120;
-                wheelStep++;
-              }
-
-              while (wheelStep !== 0) {
-                if (wheelStep < 0) {
-                  if (root.currentDesktopIndex < desktopInfo.numberOfDesktops - 1) {
-                    root.activateDesktopAt(root.currentDesktopIndex + 1);
-                  } else if (Plasmoid.configuration.desktopWrapOn) {
-                    root.activateDesktopAt(0);
-                  }
-                } else {
-                  if (root.currentDesktopIndex > 0) {
-                    root.activateDesktopAt(root.currentDesktopIndex - 1);
-                  } else if (Plasmoid.configuration.desktopWrapOn) {
-                    root.activateDesktopAt(desktopInfo.numberOfDesktops - 1);
-                  }
-                }
-                wheelStep += (wheelStep < 0) ? 1 : -1;
-              }
-            }
-          }
-        }
-
-        PlasmaComponents.Label {
-          id: indicatorDot
+        Loader {
+          id: indicatorContent
 
           anchors.centerIn: parent
-          font.pixelSize: {
-            if (Plasmoid.configuration.dotSize == 0) {
-              return Kirigami.Theme.defaultFont.pixelSize;
-            } else if (Plasmoid.configuration.dotSize == 1) {
-              //TODO: Consider adding state support for vertical panel users
-              return parent.height;
-            } else {
-              return Plasmoid.configuration.dotSizeCustom;
-            }
+          source: root.indicatorType[root.cfg.indicatorType] ?? root.indicatorType["dot"]
+
+          Binding {
+            target: indicatorContent.item
+            property: "desktop"
+            value: { "isCurrent": index === actions.currentIndex }
           }
-          text: {
-            if (Plasmoid.configuration.dotType == 0) {
-              if (index == root.currentDesktopIndex) {
-                return "●";
-              } else {
-                return "○";
-              }
-            } else {
-              if (index == root.currentDesktopIndex) {
-                return Plasmoid.configuration.activeDot;
-              } else {
-                return Plasmoid.configuration.inactiveDot;
-              }
-            }
+          Binding {
+            target: indicatorContent.item
+            property: "containerHeight"
+            value: indicator.height
           }
-          MouseArea {
-            anchors.fill: parent
-            onClicked: mouse => {
-              if (Plasmoid.configuration.leftClickAction == 3) {
-                root.activateDesktopAt(index);
-              }
-            }
-            z: {
-              if (Plasmoid.configuration.leftClickAction != 3) {
-                return 0;
-              } else {
-                return 1;
-              }
-            }
-          }
+        }
+
+        TapHandler {
+          acceptedButtons: Qt.LeftButton
+          enabled: root.cfg.leftClickAction !== "none"
+          onTapped: actions.runAction(root.cfg.leftClickAction, index)
+        }
+        TapHandler {
+          acceptedButtons: Qt.RightButton
+          enabled: root.cfg.rightClickAction !== "none"
+          onTapped: actions.runAction(root.cfg.rightClickAction, index)
         }
       }
     }
-  }
-
-  PlasmaSupport.DataSource {
-    id: executable
-    engine: "executable"
-    connectedSources: []
-    onNewData: sourceName => disconnectSource(sourceName)
-
-    function exec(cmd) {
-      executable.connectSource(cmd);
-    }
-  }
-
-  function exposeDesktop() {
-    executable.exec('qdbus org.kde.kglobalaccel /component/kwin invokeShortcut Overview');
   }
 }
