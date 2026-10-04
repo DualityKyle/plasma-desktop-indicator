@@ -50,5 +50,17 @@
       <label>Indicator size in pixels when indicatorSizeMode is "custom".</label>
       <default>14</default>
     </entry>
+    <entry name="indicatorCustomColor" type="Bool">
+      <label>Allow indicator dot colours to be customised.</label>
+      <default>false</default>
+    </entry>
+    <entry name="activeColor" type="Color">
+      <label>Colour of the current desktop's indicator when indicatorCustomColor is "custom".</label>
+      <default>#ffffff</default>
+    </entry>
+    <entry name="inactiveColor" type="Color">
+      <label>Colour of the other desktop indicators when indicatorCustomColor is "custom".</label>
+      <default>#ffffff</default>
+    </entry>
   </group>
 </kcfg>

@@ -7,6 +7,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls as QC
+import org.kde.kquickcontrols as KQuickControls
 import org.kde.kcmutils as KCM
 import org.kde.kirigami as Kirigami
 
@@ -17,6 +18,9 @@ KCM.SimpleKCM {
   property alias cfg_inactiveDot: inactiveDot.text
   property string cfg_indicatorSizeMode
   property alias cfg_indicatorCustomSize: indicatorCustomSize.value
+  property alias cfg_indicatorCustomColor: indicatorCustomColor.checked
+  property alias cfg_activeColor: activeColorButton.color
+  property alias cfg_inactiveColor: inactiveColorButton.color
 
   Kirigami.FormLayout {
     RowLayout {
@@ -106,6 +110,23 @@ KCM.SimpleKCM {
         to: 72
         visible: cfg_indicatorSizeMode === "custom"
       }
+    }
+    QC.CheckBox {
+      id: indicatorCustomColor
+      Kirigami.FormData.label: i18n("Colours:")
+      text: i18n("Customise colours")
+    }
+    KQuickControls.ColorButton {
+      id: activeColorButton
+      Kirigami.FormData.label: i18n("Current desktop:")
+      showAlphaChannel: true
+      enabled: customColorsCheck.checked
+    }
+    KQuickControls.ColorButton {
+      id: inactiveColorButton
+      Kirigami.FormData.label: i18n("Other desktops:")
+      showAlphaChannel: true
+      enabled: customColorsCheck.checked
     }
   }
 }
