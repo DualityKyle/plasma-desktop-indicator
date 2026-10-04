@@ -26,6 +26,10 @@
     </entry>
   </group>
   <group name="Appearance">
+    <entry name="indicatorSpacing" type="Int">
+      <label>Spacing between indicators.</label>
+      <default>0</default>
+    </entry>
     <entry name="dotStyle" type="String">
       <label>What style to use for indicator dots</label>
       <default>default</default>
