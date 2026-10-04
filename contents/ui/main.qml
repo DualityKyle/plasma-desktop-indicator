@@ -47,7 +47,7 @@ PlasmoidItem {
         id: indicator
 
         color: "transparent"
-        implicitWidth: indicatorContent.implicitWidth
+        implicitWidth: indicatorContent.implicitWidth + (cfg.indicatorSpacing * 2)
         Layout.minimumHeight: 0
         Layout.fillHeight: true
 

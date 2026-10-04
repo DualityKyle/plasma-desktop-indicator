@@ -11,6 +11,7 @@ import org.kde.kcmutils as KCM
 import org.kde.kirigami as Kirigami
 
 KCM.SimpleKCM {
+  property alias cfg_indicatorSpacing: indicatorSpacing.value
   property string cfg_dotStyle
   property alias cfg_activeDot: activeDot.text
   property alias cfg_inactiveDot: inactiveDot.text
@@ -18,6 +19,28 @@ KCM.SimpleKCM {
   property alias cfg_indicatorCustomSize: indicatorCustomSize.value
 
   Kirigami.FormLayout {
+    RowLayout {
+      Kirigami.FormData.label: i18n("Space between dots:")
+      QC.Slider {
+        id: indicatorSpacing
+        Layout.minimumWidth: Kirigami.Units.gridUnit * 15
+        from: 0
+        to: 20
+        stepSize: 1
+      }
+      QC.Label {
+        id: valueLabel
+        Layout.minimumWidth: valueMetrics.width
+        horizontalAlignment: Text.AlignRight
+        text: i18n("%1px", indicatorSpacing.value)
+
+        TextMetrics {
+          id: valueMetrics
+          font: valueLabel.font
+          text: i18n("%1px", indicatorSpacing.to)
+        }
+      }
+    }
     QC.ComboBox {
       Kirigami.FormData.label: i18n("Dot type:")
       textRole: "text"
