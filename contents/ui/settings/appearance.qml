@@ -51,6 +51,10 @@ KCM.SimpleKCM {
           value: "default"
         },
         {
+          text: i18n("GNOME-style pills"),
+          value: "pill"
+        },
+        {
           text: i18n("Custom"),
           value: "custom"
         }

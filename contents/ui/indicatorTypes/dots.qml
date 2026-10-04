@@ -15,6 +15,9 @@ Item {
   property var desktop: ({ isCurrent: false })
   property real containerHeight: 0
 
+  readonly property bool isPill: cfg.dotStyle === "pill"
+  readonly property int pillSize: root.baseSize
+
   readonly property var cfg: Plasmoid.configuration
   readonly property real baseSize: {
     switch (cfg.indicatorSizeMode) {
@@ -24,12 +27,13 @@ Item {
     }
   }
 
-  implicitWidth: unicodeDots.implicitWidth
-  implicitHeight: unicodeDots.implicitHeight
+  implicitWidth: isPill ? pill.width : unicodeDots.implicitWidth
+  implicitHeight: isPill ? pill.height : unicodeDots.implicitHeight
 
   PC3.Label {
     id: unicodeDots
 
+    visible: !root.isPill
     font.pixelSize: root.baseSize
     text: {
       const custom = root.cfg.dotStyle === "custom";
@@ -37,5 +41,16 @@ Item {
         return custom ? root.cfg.activeDot : "●";
       return custom ? root.cfg.inactiveDot : "○";
     }
+  }
+
+  Rectangle {
+    id: pill
+
+    visible: root.isPill
+    width: root.desktop.isCurrent ? root.pillSize * 2 : root.pillSize
+    height: root.pillSize
+    radius: height / 2
+    color: Kirigami.Theme.textColor
+    opacity: root.desktop.isCurrent ? 1 : 0.5
   }
 }
