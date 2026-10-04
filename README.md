@@ -13,10 +13,12 @@ As a former GNOME user, I was a huge fan of the Workspace Indicator extension fo
 * Workspace wraparound
 * Show desktops in a single row or follow Plasma setting
 * Customisable indicator size
+* Custom spacing between indicators
+* Custom colour options
 
 ### To-Do:
-* Add customisable spacing between indicators
-* Add colour options
+* Add option to reverse scroll direction
+* Add horizontal scrolling for touchpad users
 * Support for multi-monitor setups
 
 *This project is finally under active development again (sorry for disappearing). If you find any bugs, or if there is a feature that you'd like to see, please don't hesitate to open a bug report or feature request!*
