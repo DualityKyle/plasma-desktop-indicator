@@ -37,7 +37,7 @@ KCM.SimpleKCM {
       textRole: "text"
       valueRole: "value"
       model: [
-        { text: i18n("Do nothing"), value: "none" },
+        { text: i18n("Default context menu"), value: "none" },
         { text: i18n("Switch to next desktop"), value: "next" },
         { text: i18n("Switch to previous desktop"), value: "previous" },
         { text: i18n("Go to clicked desktop"), value: "goto" },

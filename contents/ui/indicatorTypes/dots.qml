@@ -6,6 +6,7 @@
 
 import QtQuick
 import org.kde.plasma.plasmoid
+import org.kde.plasma.components as PC3
 import org.kde.kirigami as Kirigami
 
 Item {
@@ -32,7 +33,7 @@ Item {
   implicitWidth: isPill ? pill.width : unicodeDots.implicitWidth
   implicitHeight: isPill ? pill.height : unicodeDots.implicitHeight
 
-  Text {
+  PC3.Label {
     id: unicodeDots
 
     visible: !root.isPill
