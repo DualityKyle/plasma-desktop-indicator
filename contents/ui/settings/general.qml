@@ -17,6 +17,12 @@ KCM.SimpleKCM {
   property alias cfg_singleRow: singleRow.checked
 
   Kirigami.FormLayout {
+
+
+    Kirigami.Separator {
+      Kirigami.FormData.isSection: true
+      Kirigami.FormData.label: i18n("Mouse Actions")
+    }
     QC.ComboBox {
       Kirigami.FormData.label: i18n("Left click action:")
       textRole: "text"
@@ -51,6 +57,11 @@ KCM.SimpleKCM {
       id: scrollWheelOn
       Kirigami.FormData.label: i18n("Scrolling:")
       text: i18n("Switch desktops with the mouse wheel")
+    }
+
+    Kirigami.Separator {
+      Kirigami.FormData.isSection: true
+      Kirigami.FormData.label: i18n("Widget Behaviour")
     }
 
     Column {

@@ -14,7 +14,7 @@
     "Id": "com.github.dualitykyle.desktopindicator",
     "License": "GPL-3.0+",
     "Name": "Minimal Desktop Indicator",
-    "Version": "6.0.0",
+    "Version": "6.1.0",
     "Website": "https://github.com/DualityKyle/plasma-desktop-indicator"
   },
   "X-Plasma-API-Minimum-Version": "6.0",
