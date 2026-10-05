@@ -18,7 +18,7 @@ KCM.SimpleKCM {
   property alias cfg_inactiveDot: inactiveDot.text
   property string cfg_indicatorSizeMode
   property alias cfg_indicatorCustomSize: indicatorCustomSize.value
-  property alias cfg_indicatorCustomColor: indicatorCustomColor.checked
+  property alias cfg_indicatorCustomColorsOn: indicatorCustomColorsOn.checked
   property alias cfg_activeColor: activeColorButton.color
   property alias cfg_inactiveColor: inactiveColorButton.color
 
@@ -112,21 +112,21 @@ KCM.SimpleKCM {
       }
     }
     QC.CheckBox {
-      id: indicatorCustomColor
+      id: indicatorCustomColorsOn
       Kirigami.FormData.label: i18n("Colours:")
       text: i18n("Customise colours")
     }
     KQuickControls.ColorButton {
       id: activeColorButton
       Kirigami.FormData.label: i18n("Current desktop:")
-      showAlphaChannel: true
-      enabled: customColorsCheck.checked
+      showAlphaChannel: false
+      enabled: indicatorCustomColorsOn.checked
     }
     KQuickControls.ColorButton {
       id: inactiveColorButton
       Kirigami.FormData.label: i18n("Other desktops:")
-      showAlphaChannel: true
-      enabled: customColorsCheck.checked
+      showAlphaChannel: false
+      enabled: indicatorCustomColorsOn.checked
     }
   }
 }

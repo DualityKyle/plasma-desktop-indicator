@@ -26,7 +26,7 @@ Item {
       default: return Kirigami.Theme.defaultFont.pixelSize;
     }
   }
-  readonly property color indicatorCustomColor: cfg.indicatorCustomColor
+  readonly property color indicatorCustomColorsOn: cfg.indicatorCustomColorsOn
     ? (desktop.isCurrent ? cfg.activeColor : cfg.inactiveColor)
     : Kirigami.Theme.textColor
 
@@ -38,7 +38,7 @@ Item {
 
     visible: !root.isPill
     font.pixelSize: root.baseSize
-    color: root.indicatorCustomColor
+    color: root.indicatorCustomColorsOn
     text: {
       const custom = root.cfg.dotStyle === "custom";
       if (root.desktop.isCurrent)
@@ -54,7 +54,7 @@ Item {
     width: root.desktop.isCurrent ? root.pillSize * 2 : root.pillSize
     height: root.pillSize
     radius: height / 2
-    color: root.indicatorCustomColor
+    color: root.indicatorCustomColorsOn
     opacity: root.desktop.isCurrent ? 1 : 0.5
   }
 }
