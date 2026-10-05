@@ -36,7 +36,34 @@ Item {
       + "org.kde.KWin.VirtualDesktopManager "
       + "current "
       + "\"<'" + desktopId + "'>\""
-    )
+    );
+  }
+
+  function addDesktop() {
+    executable.exec(
+      "gdbus call --session "
+      + "--dest org.kde.KWin "
+      + "--object-path /VirtualDesktopManager "
+      + "--method org.kde.KWin.VirtualDesktopManager.createDesktop "
+      + count + " \"Desktop " + (count + 1) + "\""
+    );
+  }
+
+  function removeDesktop() {
+    if (count <= 1) {
+      return;
+    }
+    executable.exec(
+      "gdbus call --session "
+      + "--dest org.kde.KWin "
+      + "--object-path /VirtualDesktopManager "
+      + "--method org.kde.KWin.VirtualDesktopManager.removeDesktop "
+      + "\"'" + info.desktopIds[count - 1] + "'\""
+    );
+  }
+
+  function configureDesktops() {
+    executable.exec("kcmshell6 kcm_kwin_virtualdesktops");
   }
 
   function exposeDesktop() {

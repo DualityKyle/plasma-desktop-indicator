@@ -8,6 +8,7 @@ import QtQuick
 import QtQuick.Layouts
 import org.kde.plasma.plasmoid
 import org.kde.taskmanager as TaskManager
+import org.kde.plasma.core as PlasmaCore
 
 PlasmoidItem {
   id: root
@@ -82,4 +83,22 @@ PlasmoidItem {
       }
     }
   }
+
+  Plasmoid.contextualActions: [
+    PlasmaCore.Action {
+      text: i18n("Add Virtual Desktop")
+      icon.name: "list-add"
+      onTriggered: actions.addDesktop()
+    },
+    PlasmaCore.Action {
+      text: i18n("Remove Virtual Desktop")
+      icon.name: "list-remove"
+      onTriggered: actions.removeDesktop()
+    },
+    PlasmaCore.Action {
+      text: i18n("Configure Virtual Desktops...")
+      icon.name: "configure"
+      onTriggered: actions.configureDesktops()
+    }
+  ]
 }
