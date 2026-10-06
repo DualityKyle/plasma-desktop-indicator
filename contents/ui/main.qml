@@ -35,12 +35,23 @@ PlasmoidItem {
 
     WheelHandler {
       enabled: root.cfg.scrollWheelOn
+      orientation: Qt.Vertical
       acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
       onWheel: (event) => {
         const scrollDir = event.angleDelta;
-        console.log(scrollDir);
-        const useXAxis = root.cfg.horizontalScroll && Math.abs(scrollDir.x) > Math.abs(scrollDir.y);
-        actions.handleWheel(useXAxis ? scrollDir.x : scrollDir.y);
+        if (!root.cfg.scrollHorizontal || Math.abs(scrollDir.y) >= Math.abs(scrollDir.x))
+        actions.handleWheel(scrollDir.y);
+      }
+    }
+
+    WheelHandler {
+      enabled: root.cfg.scrollWheelOn && root.cfg.horizontalScroll
+      orientation: Qt.Horizontal
+      acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
+      onWheel: (event) => {
+        const scrollDir = event.angleDelta;
+        if (Math.abs(scrollDir.x) > Math.abs(scrollDir.y))
+          actions.handleWheel(scrollDir.x);
       }
     }
 
