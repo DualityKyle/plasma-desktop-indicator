@@ -88,7 +88,7 @@ Item {
   }
 
   function handleWheel(delta) {
-    wheelDelta += delta;
+    wheelDelta += cfg.invertScroll ? -delta : delta;
     while (Math.abs(wheelDelta) >= 120) {
       const down = wheelDelta < 0;
       wheelDelta += down ? 120 : -120;

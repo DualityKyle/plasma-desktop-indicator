@@ -34,11 +34,14 @@ PlasmoidItem {
     rowSpacing: 0
 
     WheelHandler {
-      // TO-DO: Add horizontal scrolling option for touchpad users
-      // TO-DO: Add option to invert scroll direction
       enabled: root.cfg.scrollWheelOn
       acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
-      onWheel: (event) => actions.handleWheel(event.angleDelta.x || event.angleDelta.y)
+      onWheel: (event) => {
+        const scrollDir = event.angleDelta;
+        console.log(scrollDir);
+        const useXAxis = root.cfg.horizontalScroll && Math.abs(scrollDir.x) > Math.abs(scrollDir.y);
+        actions.handleWheel(useXAxis ? scrollDir.x : scrollDir.y);
+      }
     }
 
     Repeater {

@@ -16,6 +16,14 @@
       <label>Whether scrolling the mouse on the widget changes the current desktop.</label>
       <default>true</default>
     </entry>
+    <entry name="horizontalScroll" type="Bool">
+      <label>Whether horizontal scrolling changes the desktop</label>
+      <default>false</default>
+    </entry>        
+    <entry name="invertScroll" type="Bool">
+      <label>Whether scrolling inverts which desktop is selected</label>
+      <default>false</default>
+    </entry>
     <entry name="desktopWrapOn" type="Bool">
       <label>Whether the desktop navigation stops at the end or wraps around.</label>
       <default>false</default>

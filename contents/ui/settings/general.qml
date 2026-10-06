@@ -13,6 +13,8 @@ KCM.SimpleKCM {
   property string cfg_leftClickAction
   property string cfg_rightClickAction
   property alias cfg_scrollWheelOn: scrollWheelOn.checked
+  property alias cfg_horizontalScroll: horizontalScroll.checked
+  property alias cfg_invertScroll: invertScroll.checked
   property alias cfg_desktopWrapOn: desktopWrapOn.checked
   property alias cfg_singleRow: singleRow.checked
 
@@ -58,6 +60,16 @@ KCM.SimpleKCM {
       Kirigami.FormData.label: i18n("Scrolling:")
       text: i18n("Switch desktops with the mouse wheel")
     }
+    QC.CheckBox {
+      id: horizontalScroll
+      Kirigami.FormData.label: i18n("Horizontal Scrolling:")
+      text: i18n("Switch desktops by horizontally scrolling the touchpad")
+    }
+    QC.CheckBox {
+      id: invertScroll
+      Kirigami.FormData.label: i18n("Invert Scroll:")
+      text: i18n("Reverse desktop switching direction when scrolling")
+    }    
 
     Kirigami.Separator {
       Kirigami.FormData.isSection: true
