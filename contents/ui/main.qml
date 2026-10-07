@@ -17,7 +17,10 @@ PlasmoidItem {
 
   readonly property var cfg: Plasmoid.configuration
   readonly property var indicatorType: ({
-    "dot": "indicatorTypes/dots.qml"
+    "dot": "indicatorTypes/dots.qml",
+    "menu": "indicatorTypes/menu.qml",
+    "label": "indicatorTypes/labels.qml",
+    "position": "indicatorTypes/position.qml"
   })
 
   TaskManager.VirtualDesktopInfo { id: desktopInfo }
@@ -75,7 +78,12 @@ PlasmoidItem {
           Binding {
             target: indicatorContent.item
             property: "desktop"
-            value: { "isCurrent": index === actions.currentIndex }
+            value: ({
+              "index": index,
+              "number": index + 1,
+              "name": desktopInfo.desktopNames[index] ?? "",
+              "isCurrent": index === actions.currentIndex
+            })
           }
           Binding {
             target: indicatorContent.item
