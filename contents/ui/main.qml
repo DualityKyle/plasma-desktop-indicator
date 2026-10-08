@@ -15,6 +15,7 @@ PlasmoidItem {
 
   preferredRepresentation: fullRepresentation
 
+  readonly property bool vertical: Plasmoid.formFactor === PlasmaCore.Types.Vertical
   readonly property var cfg: Plasmoid.configuration
   readonly property var indicatorType: ({
     "dot": "indicatorTypes/dots.qml",
@@ -27,12 +28,12 @@ PlasmoidItem {
   DesktopHandlers { id: actions; info: desktopInfo; cfg: root.cfg; }
 
   fullRepresentation: GridLayout {
-    rows: cfg.singleRow
-      ? 1
-      : desktopInfo.desktopLayoutRows;
-    columns: cfg.singleRow
-      ? desktopInfo.numberOfDesktops
-      : Math.ceil(desktopInfo.numberOfDesktops / desktopInfo.desktopLayoutRows);
+    readonly property int layoutRows: Math.max(1, cfg.singleRow ? 1 : desktopInfo.desktopLayoutRows)
+    readonly property int layoutCols: Math.max(desktopInfo.numberOfDesktops / layoutRows)
+
+    flow: root.vertical ? GridLayout.TopToBottom : GridLayout.LeftToRight
+    rows: root.vertical ? layoutCols : layoutRows
+    columns: root.vertical ? layoutRows : layoutCols
     columnSpacing: 0
     rowSpacing: 0
 
@@ -65,9 +66,13 @@ PlasmoidItem {
         id: indicator
 
         color: "transparent"
-        implicitWidth: indicatorContent.implicitWidth + (cfg.indicatorSpacing * 2)
+        
+        implicitWidth:  root.vertical ? 0 : indicatorContent.implicitWidth  + (cfg.indicatorSpacing * 2)
+        implicitHeight: root.vertical ? indicatorContent.implicitHeight + (cfg.indicatorSpacing * 2) : 0
+        Layout.minimumWidth:0
         Layout.minimumHeight: 0
-        Layout.fillHeight: true
+        Layout.fillWidth: root.vertical
+        Layout.fillHeight: !root.vertical
 
         Loader {
           id: indicatorContent
@@ -85,10 +90,17 @@ PlasmoidItem {
               "isCurrent": index === actions.currentIndex
             })
           }
+
           Binding {
             target: indicatorContent.item
-            property: "containerHeight"
-            value: indicator.height
+            property: "vertical"
+            value: root.vertical
+          }
+
+          Binding {
+            target: indicatorContent.item
+            property: "containerSize"
+            value: root.vertical ? indicator.width : indicator.height
           }
         }
 

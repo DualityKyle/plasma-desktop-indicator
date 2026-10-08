@@ -13,7 +13,8 @@ Item {
   id: root
 
   property var desktop: ({ isCurrent: false })
-  property real containerHeight: 0
+  property bool vertical: false
+  property real containerSize: 0
 
   readonly property bool isPill: cfg.dotStyle === "pill"
   readonly property int pillSize: root.baseSize
@@ -21,7 +22,7 @@ Item {
   readonly property var cfg: Plasmoid.configuration
   readonly property real baseSize: {
     switch (cfg.indicatorSizeMode) {
-      case "panel": return Math.max(6, containerHeight);
+      case "panel": return Math.max(6, containerSize);
       case "custom": return cfg.indicatorCustomSize;
       default: return Kirigami.Theme.defaultFont.pixelSize;
     }
@@ -66,9 +67,9 @@ Item {
     id: pill
 
     visible: root.isPill
-    width: root.desktop.isCurrent ? root.pillSize * 2 : root.pillSize
-    height: root.pillSize
-    radius: height / 2
+    width: root.vertical ? root.pillSize : (root.desktop.isCurrent ? root.pillSize * 2 : root.pillSize)
+    height: root.vertical ? (root.desktop.isCurrent ? root.pillSize * 2 : root.pillSize) : root.pillSize
+    radius: Math.min(width, height) / 2
     color: root.indicatorCustomColor
     opacity: root.desktop.isCurrent ? 1 : 0.5
   }
