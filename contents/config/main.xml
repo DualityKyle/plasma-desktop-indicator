@@ -70,5 +70,9 @@
       <label>Colour of the other desktop indicators when indicatorCustomColorsOn is "custom".</label>
       <default>#ffffff</default>
     </entry>
+    <entry name="rotateText" type="Bool">
+      <label>Whether text labels are rotated when used in a vertical panel</label>
+      <default>false</default>
+    </entry>
   </group>
 </kcfg>

@@ -8,6 +8,7 @@ import QtQuick
 import org.kde.plasma.plasmoid
 import org.kde.plasma.components as PC3
 import org.kde.kirigami as Kirigami
+import "../components"
 
 Item {
   id: root
@@ -34,10 +35,11 @@ Item {
   implicitWidth: isPill ? pill.width : unicodeDots.implicitWidth
   implicitHeight: isPill ? pill.height : unicodeDots.implicitHeight
 
-  PC3.Label {
+  RotatableText {
     id: unicodeDots
 
     visible: !root.isPill
+    vertical: root.vertical
     font.pixelSize: root.baseSize
     color: root.indicatorCustomColor
 

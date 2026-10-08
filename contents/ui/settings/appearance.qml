@@ -13,6 +13,7 @@ import org.kde.kirigami as Kirigami
 
 KCM.SimpleKCM {
   property alias cfg_indicatorSpacing: indicatorSpacing.value
+  property alias cfg_rotateText: rotateText.checked
   property string cfg_dotStyle
   property alias cfg_activeDot: activeDot.text
   property alias cfg_inactiveDot: inactiveDot.text
@@ -52,6 +53,10 @@ KCM.SimpleKCM {
             text: i18n("%1px", indicatorSpacing.to)
           }
         }
+      }
+      QC.CheckBox {
+        id: rotateText
+        text: i18n("Rotate text on vertical panels")
       }
       Kirigami.Separator {
         Kirigami.FormData.isSection: true
