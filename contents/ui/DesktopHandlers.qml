@@ -74,7 +74,7 @@ Item {
     const target = currentIndex + delta;
     if (target >= 0 && target < count)
       activateDesktopAt(target);
-    else if (cfg.desktopWrapOn)
+    else if (cfg.navigationWrap)
       activateDesktopAt((target + count) % count);
   }
 
@@ -88,7 +88,7 @@ Item {
   }
 
   function handleWheel(delta) {
-    wheelDelta += cfg.invertScroll ? -delta : delta;
+    wheelDelta += cfg.scrollInverted ? -delta : delta;
     while (Math.abs(wheelDelta) >= 120) {
       const down = wheelDelta < 0;
       wheelDelta += down ? 120 : -120;

@@ -12,15 +12,13 @@ import org.kde.kirigami as Kirigami
 KCM.SimpleKCM {
   property string cfg_leftClickAction
   property string cfg_rightClickAction
-  property alias cfg_scrollWheelOn: scrollWheelOn.checked
-  property alias cfg_horizontalScroll: horizontalScroll.checked
-  property alias cfg_invertScroll: invertScroll.checked
-  property alias cfg_desktopWrapOn: desktopWrapOn.checked
+  property alias cfg_scrollEnabled: scrollEnabled.checked
+  property alias cfg_scrollHorizontal: scrollHorizontal.checked
+  property alias cfg_scrollInverted: scrollInverted.checked
+  property alias cfg_navigationWrap: navigationWrap.checked
   property alias cfg_singleRow: singleRow.checked
 
   Kirigami.FormLayout {
-
-
     Kirigami.Separator {
       Kirigami.FormData.isSection: true
       Kirigami.FormData.label: i18n("Mouse Actions")
@@ -39,7 +37,6 @@ KCM.SimpleKCM {
       Component.onCompleted: currentIndex = indexOfValue(cfg_leftClickAction)
       onActivated: cfg_leftClickAction = currentValue
     }
-
     QC.ComboBox {
       Kirigami.FormData.label: i18n("Right click action:")
       textRole: "text"
@@ -55,42 +52,41 @@ KCM.SimpleKCM {
       onActivated: cfg_rightClickAction = currentValue
     }
 
-    QC.CheckBox {
-      id: scrollWheelOn
-      Kirigami.FormData.label: i18n("Scrolling:")
-      text: i18n("Switch desktops with the mouse wheel")
+    Kirigami.Separator {
+      Kirigami.FormData.isSection: true
+      Kirigami.FormData.label: i18n("Scroll Actions")
     }
     QC.CheckBox {
-      id: horizontalScroll
-      Kirigami.FormData.label: i18n("Horizontal Scrolling:")
-      text: i18n("Switch desktops by horizontally scrolling the touchpad")
+      id: scrollEnabled
+      text: i18n("Switch desktops by scrolling")
     }
     QC.CheckBox {
-      id: invertScroll
-      Kirigami.FormData.label: i18n("Invert Scroll:")
-      text: i18n("Reverse desktop switching direction when scrolling")
-    }    
+      id: scrollInverted
+      text: i18n("Reverse scroll direction")
+    }     
+    QC.CheckBox {
+      id: scrollHorizontal
+      text: i18n("Enable horizontal touchpad scrolling")
+    } 
 
     Kirigami.Separator {
       Kirigami.FormData.isSection: true
       Kirigami.FormData.label: i18n("Widget Behaviour")
     }
-
     Column {
       Kirigami.FormData.label: i18n("Navigation behaviour:")
-      Kirigami.FormData.buddyFor: desktopWrapOn
+      Kirigami.FormData.buddyFor: navigationWrap
 
       QC.RadioButton {
-        id: desktopWrapOn
+        id: navigationWrap
         text: i18n("Wraparound")
       }
       QC.RadioButton {
         id: followWraparoundSetting
         text: i18n("Follow Plasma setting")
-        checked: !desktopWrapOn.checked
+        checked: !navigationWrap.checked
       }
     }
-
     Column {
       Kirigami.FormData.label: i18n("Desktop Rows:")
       Kirigami.FormData.buddyFor: singleRow

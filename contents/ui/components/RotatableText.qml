@@ -19,7 +19,22 @@ Item {
   property real maxLength: -1
 
   readonly property var cfg: Plasmoid.configuration
-  readonly property bool rotated: vertical && cfg.rotateText
+  readonly property real angle: {
+    if (!vertical) {
+      return 0
+    }
+    switch (cfg.textRotation) {
+      case "edge":
+        return Plasmoid.location === PlasmaCore.Types.LeftEdge ? -90 : 90
+      case "90":
+        return 90
+      case "270":
+        return 270
+      default:
+        return 0
+    }
+  }
+  readonly property bool rotated: angle !== 0
 
   implicitWidth:  rotated ? label.implicitHeight : label.implicitWidth
   implicitHeight: rotated ? label.implicitWidth  : label.implicitHeight
@@ -28,7 +43,6 @@ Item {
     id: label
     anchors.centerIn: parent
     width: root.maxLength > 0 ? Math.min(implicitWidth, root.maxLength) : implicitWidth
-    rotation: !root.rotated ? 0
-            : (Plasmoid.location === PlasmaCore.Types.LeftEdge ? -90 : 90)
+    rotation: root.angle
   }
 }

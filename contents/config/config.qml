@@ -9,12 +9,17 @@ import org.kde.plasma.configuration
 ConfigModel {
   ConfigCategory {
     name: i18n("General")
-    icon: "preferences-desktop-plasma"
+    icon: "preferences-system"
     source: "settings/general.qml"
   }
   ConfigCategory {
     name: i18n("Appearance")
-    icon: "preferences-desktop-theme"
+    icon: "preferences-desktop-virtual"
     source: "settings/appearance.qml"
+  }
+  ConfigCategory {
+    name: i18n("Colours")
+    icon: "colormanagement"
+    source: "settings/colors.qml"
   }
 }

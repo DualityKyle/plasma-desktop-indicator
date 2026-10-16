@@ -12,19 +12,19 @@
       <label>What happens when you right click on the widget.</label>
       <default>none</default>
     </entry>
-    <entry name="scrollWheelOn" type="Bool">
+    <entry name="scrollEnabled" type="Bool">
       <label>Whether scrolling the mouse on the widget changes the current desktop.</label>
       <default>true</default>
     </entry>
-    <entry name="horizontalScroll" type="Bool">
-      <label>Whether horizontal scrolling changes the desktop</label>
-      <default>false</default>
-    </entry>        
-    <entry name="invertScroll" type="Bool">
-      <label>Whether scrolling inverts which desktop is selected</label>
+    <entry name="scrollInverted" type="Bool">
+      <label>Whether scrolling inverts which desktop is selected.</label>
       <default>false</default>
     </entry>
-    <entry name="desktopWrapOn" type="Bool">
+    <entry name="scrollHorizontal" type="Bool">
+      <label>Whether horizontal scrolling changes the current desktop.</label>
+      <default>false</default>
+    </entry>
+    <entry name="navigationWrap" type="Bool">
       <label>Whether the desktop navigation stops at the end or wraps around.</label>
       <default>false</default>
     </entry>
@@ -34,45 +34,51 @@
     </entry>
   </group>
   <group name="Appearance">
+    <entry name="indicatorType" type="String">
+      <label>Which style of desktop indicator will be used.</label>
+      <default>minimal</default>
+    </entry>
     <entry name="indicatorSpacing" type="Int">
-      <label>Spacing between indicators.</label>
+      <label>The amount of spacing between indicators.</label>
       <default>0</default>
     </entry>
-    <entry name="dotStyle" type="String">
-      <label>What style to use for indicator dots</label>
+    <entry name="textRotation" type="String">
+      <label>How indicator text will be rotated on vertical panels.</label>
+      <default>none</default>
+    </entry>
+    <entry name="minimalStyle" type="String">
+      <label>What style of minimal indicator to display.</label>
       <default>default</default>
     </entry>
-    <entry name="activeDot" type="String">
-      <label>The unicode character used for the active desktop indicator</label>
+    <entry name="minimalCharActive" type="String">
+      <label>The unicode character used for the active desktop indicator.</label>
       <default>●</default>
     </entry>
-    <entry name="inactiveDot" type="String">
-      <label>The unicode character used for the inactive desktop indicator</label>
+    <entry name="minimalCharInactive" type="String">
+      <label>The unicode character used for the inactive desktop indicator.</label>
       <default>○</default>
     </entry>
-    <entry name="indicatorSizeMode" type="String">
-      <label>How the widget renders the size of the indicators</label>
+    <entry name="minimalSizeMode" type="String">
+      <label>How the size of indicator characters is rendered.</label>
       <default>theme</default>
     </entry>
-    <entry name="indicatorCustomSize" type="Int">
-      <label>Indicator size in pixels when indicatorSizeMode is "custom".</label>
+    <entry name="minimalSizeCustom" type="Int">
+      <label>Indicator size in pixels when minimalSizeMode is "custom".</label>
       <default>14</default>
     </entry>
-    <entry name="indicatorCustomColorsOn" type="Bool">
-      <label>Allow indicator dot colours to be customised.</label>
+  </group>
+  <group name="Colors">
+    <entry name="minimalCustomColors" type="Bool">
+      <label>Allow indicator text colours to be customised.</label>
       <default>false</default>
     </entry>
-    <entry name="activeColor" type="Color">
-      <label>Colour of the current desktop's indicator when indicatorCustomColorsOn is "custom".</label>
+    <entry name="minimalColorActive" type="Color">
+      <label>Colour of the current desktop's indicator when minimalCustomColors is "custom".</label>
       <default>#ffffff</default>
     </entry>
-    <entry name="inactiveColor" type="Color">
-      <label>Colour of the other desktop indicators when indicatorCustomColorsOn is "custom".</label>
+    <entry name="minimalColorInactive" type="Color">
+      <label>Colour of inactive desktop indicators when minimalCustomColors is "custom".</label>
       <default>#ffffff</default>
-    </entry>
-    <entry name="rotateText" type="Bool">
-      <label>Whether text labels are rotated when used in a vertical panel</label>
-      <default>false</default>
     </entry>
   </group>
 </kcfg>

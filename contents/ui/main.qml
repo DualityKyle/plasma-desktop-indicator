@@ -18,7 +18,7 @@ PlasmoidItem {
   readonly property bool vertical: Plasmoid.formFactor === PlasmaCore.Types.Vertical
   readonly property var cfg: Plasmoid.configuration
   readonly property var indicatorType: ({
-    "dot": "indicatorTypes/dots.qml",
+    "minimal": "indicatorTypes/minimal.qml",
     "menu": "indicatorTypes/menu.qml",
     "label": "indicatorTypes/labels.qml",
     "position": "indicatorTypes/position.qml"
@@ -38,7 +38,7 @@ PlasmoidItem {
     rowSpacing: 0
 
     WheelHandler {
-      enabled: root.cfg.scrollWheelOn
+      enabled: root.cfg.scrollEnabled
       orientation: Qt.Vertical
       acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
       onWheel: (event) => {
@@ -49,7 +49,7 @@ PlasmoidItem {
     }
 
     WheelHandler {
-      enabled: root.cfg.scrollWheelOn && root.cfg.horizontalScroll
+      enabled: root.cfg.scrollEnabled && root.cfg.scrollHorizontal
       orientation: Qt.Horizontal
       acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
       onWheel: (event) => {
@@ -66,9 +66,9 @@ PlasmoidItem {
         id: indicator
 
         color: "transparent"
-        
-        implicitWidth:  root.vertical ? 0 : indicatorContent.implicitWidth  + (cfg.indicatorSpacing * 2)
-        implicitHeight: root.vertical ? indicatorContent.implicitHeight + (cfg.indicatorSpacing * 2) : 0
+
+        implicitWidth:  root.vertical ? 0 : indicatorContent.implicitWidth  + cfg.indicatorSpacing
+        implicitHeight: root.vertical ? indicatorContent.implicitHeight + cfg.indicatorSpacing : 0
         Layout.minimumWidth:0
         Layout.minimumHeight: 0
         Layout.fillWidth: root.vertical
@@ -78,7 +78,7 @@ PlasmoidItem {
           id: indicatorContent
 
           anchors.centerIn: parent
-          source: root.indicatorType[root.cfg.indicatorType] ?? root.indicatorType["dot"]
+          source: root.indicatorType[root.cfg.indicatorType] ?? root.indicatorType["minimal"]
 
           Binding {
             target: indicatorContent.item

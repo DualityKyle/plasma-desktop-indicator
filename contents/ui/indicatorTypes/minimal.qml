@@ -17,26 +17,26 @@ Item {
   property bool vertical: false
   property real containerSize: 0
 
-  readonly property bool isPill: cfg.dotStyle === "pill"
+  readonly property bool isPill: cfg.minimalStyle === "pill"
   readonly property int pillSize: root.baseSize
 
   readonly property var cfg: Plasmoid.configuration
   readonly property real baseSize: {
-    switch (cfg.indicatorSizeMode) {
+    switch (cfg.minimalSizeMode) {
       case "panel": return Math.max(6, containerSize);
-      case "custom": return cfg.indicatorCustomSize;
+      case "custom": return cfg.minimalSizeCustom;
       default: return Kirigami.Theme.defaultFont.pixelSize;
     }
   }
-  readonly property color indicatorCustomColor: cfg.indicatorCustomColorsOn
-    ? (desktop.isCurrent ? cfg.activeColor : cfg.inactiveColor)
+  readonly property color indicatorCustomColor: cfg.minimalCustomColors
+    ? (desktop.isCurrent ? cfg.minimalColorActive : cfg.minimalColorInactive)
     : Kirigami.Theme.textColor
 
-  implicitWidth: isPill ? pill.width : unicodeDots.implicitWidth
-  implicitHeight: isPill ? pill.height : unicodeDots.implicitHeight
+  implicitWidth: isPill ? pill.width : minimalText.implicitWidth
+  implicitHeight: isPill ? pill.height : minimalText.implicitHeight
 
   RotatableText {
-    id: unicodeDots
+    id: minimalText
 
     visible: !root.isPill
     vertical: root.vertical
@@ -53,15 +53,15 @@ Item {
       target: root.cfg
 
       function onColorChange() {
-        unicodeDots.color = Qt.binding(() => root.indicatorCustomColor);
+        minimalText.color = Qt.binding(() => root.indicatorCustomColor);
       }
     }
 
     text: {
-      const custom = root.cfg.dotStyle === "custom";
+      const custom = root.cfg.minimalStyle === "custom";
       if (root.desktop.isCurrent)
-        return custom ? root.cfg.activeDot : "●";
-      return custom ? root.cfg.inactiveDot : "○";
+        return custom ? root.cfg.minimalCharActive : "●";
+      return custom ? root.cfg.minimalCharInactive : "○";
     }
   }
 

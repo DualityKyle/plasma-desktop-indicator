@@ -8,183 +8,168 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls as QC
 import org.kde.kquickcontrols as KQuickControls
+import org.kde.plasma.components as PC3
 import org.kde.kcmutils as KCM
 import org.kde.kirigami as Kirigami
 
 KCM.SimpleKCM {
-  property alias cfg_indicatorSpacing: indicatorSpacing.value
-  property alias cfg_rotateText: rotateText.checked
-  property string cfg_dotStyle
-  property alias cfg_activeDot: activeDot.text
-  property alias cfg_inactiveDot: inactiveDot.text
-  property string cfg_indicatorSizeMode
-  property alias cfg_indicatorCustomSize: indicatorCustomSize.value
-  property alias cfg_indicatorCustomColorsOn: indicatorCustomColorsOn.checked
-  property alias cfg_activeColor: activeColorButton.color
-  property alias cfg_inactiveColor: inactiveColorButton.color
+  property int cfg_indicatorSpacing
+  property string cfg_textRotation
+  property string cfg_minimalStyle
+  property alias cfg_minimalCharActive: minimalCharActive.text
+  property alias cfg_minimalCharInactive: minimalCharInactive.text
+  property string cfg_minimalSizeMode
+  property alias cfg_minimalSizeCustom: minimalSizeCustom.value
 
-  ColumnLayout {
-
-    Kirigami.FormLayout {
-      Layout.fillWidth: true
-
-      Kirigami.Separator {
-        Kirigami.FormData.isSection: true
-        Kirigami.FormData.label: i18n("Layout Options")
+  Kirigami.FormLayout {
+    Layout.fillWidth: true
+    
+    Kirigami.Separator {
+      Kirigami.FormData.isSection: true
+      Kirigami.FormData.label: i18n("Layout Options")
+    }
+    QC.ComboBox {
+      Kirigami.FormData.label: i18n("Indicator type:")
+      textRole: "text"
+      valueRole: "value"
+      model: [
+        { text: i18n("Minimal"), value: "minimal" }
+      ]
+      Component.onCompleted: currentIndex = indexOfValue(cfg_indicatorType)
+      onActivated: cfg_indicatorType = currentValue
+    }
+    RowLayout {
+      Kirigami.FormData.label: i18n("Indicator spacing:")
+      PC3.Slider {
+        id: indicatorSpacing
+        Layout.preferredWidth: Kirigami.Units.gridUnit * 8
+        from: 0
+        to: 20
+        value: cfg_indicatorSpacing
+        onMoved: cfg_indicatorSpacing = Math.round(value)
       }
-      RowLayout {
-        Kirigami.FormData.label: i18n("Indicator spacing:")
-        QC.Slider {
-          id: indicatorSpacing
-          Layout.minimumWidth: Kirigami.Units.gridUnit * 15
-          from: 0
-          to: 20
-          stepSize: 1
+      QC.Label {
+        id: valueLabel
+        Layout.minimumWidth: valueMetrics.width
+        horizontalAlignment: Text.AlignRight
+        text: i18n("%1px", cfg_indicatorSpacing)
+
+        TextMetrics {
+          id: valueMetrics
+          font: valueLabel.font
+          text: i18n("%1px", cfg_indicatorSpacing)
         }
-        QC.Label {
-          id: valueLabel
-          Layout.minimumWidth: valueMetrics.width
-          horizontalAlignment: Text.AlignRight
-          text: i18n("%1px", indicatorSpacing.value)
-
-          TextMetrics {
-            id: valueMetrics
-            font: valueLabel.font
-            text: i18n("%1px", indicatorSpacing.to)
-          }
+      }
+    }
+    QC.ComboBox {
+      Kirigami.FormData.label: i18n("Rotate text on vertical panels:")
+      textRole: "text"
+      valueRole: "value"
+      model: [
+        {
+          text: i18n("None"),
+          value: "none"
+        },
+        {
+          text: i18n("Follow screen edge"),
+          value: "edge"
+        },
+        {
+          text: i18n("90° clockwise"),
+          value: "90"
+        },
+        {
+          text: i18n("270° clockwise"),
+          value: "270"
         }
+      ]
+      Component.onCompleted: currentIndex = indexOfValue(cfg_textRotation)
+      onActivated: cfg_textRotation = currentValue
+      enabled: cfg_minimalStyle !== "pill"
+    }
+
+    Kirigami.Separator {
+      Kirigami.FormData.isSection: true
+      Kirigami.FormData.label: i18n("Minimal Indicator Options")
+    }
+    QC.ComboBox {
+      Kirigami.FormData.label: i18n("Style:")
+      textRole: "text"
+      valueRole: "value"
+      model: [
+        {
+          text: i18n("Default"),
+          value: "default"
+        },
+        {
+          text: i18n("GNOME-style pills"),
+          value: "pill"
+        },
+        {
+          text: i18n("Custom characters"),
+          value: "custom"
+        }
+      ]
+      Component.onCompleted: currentIndex = indexOfValue(cfg_minimalStyle)
+      onActivated: cfg_minimalStyle = currentValue
+    }
+
+    GridLayout {
+      visible: cfg_minimalStyle === "custom"
+      columns: 2
+      columnSpacing: Kirigami.Units.smallSpacing
+      rowSpacing: Kirigami.Units.smallSpacing
+
+      QC.Label {
+        text: i18n("Active")
       }
-      QC.CheckBox {
-        id: rotateText
-        text: i18n("Rotate text on vertical panels")
+      QC.TextField {
+        id: minimalCharActive
+        Layout.preferredWidth: Kirigami.Units.gridUnit * 2
+        horizontalAlignment: TextInput.AlignHCenter
+        maximumLength: 1
       }
-      Kirigami.Separator {
-        Kirigami.FormData.isSection: true
-        Kirigami.FormData.label: i18n("Indicator Types")
+
+      QC.Label {
+        text: i18n("Inactive")
       }
+      QC.TextField {
+        id: minimalCharInactive
+        Layout.preferredWidth: Kirigami.Units.gridUnit * 2
+        horizontalAlignment: TextInput.AlignHCenter
+        maximumLength: 1
+      }
+    }
+
+    RowLayout {
+      Kirigami.FormData.label: i18n("Size:")
       QC.ComboBox {
-        Kirigami.FormData.label: i18n("Dot type:")
         textRole: "text"
         valueRole: "value"
         model: [
           {
-            text: i18n("Default"),
-            value: "default"
+            text: i18n("Default theme size"),
+            value: "theme"
           },
           {
-            text: i18n("GNOME-style pills"),
-            value: "pill"
+            text: i18n("Scale with panel"),
+            value: "panel"
           },
           {
             text: i18n("Custom"),
             value: "custom"
           }
         ]
-        Component.onCompleted: currentIndex = indexOfValue(cfg_dotStyle)
-        onActivated: cfg_dotStyle = currentValue
+        Component.onCompleted: currentIndex = indexOfValue(cfg_minimalSizeMode)
+        onActivated: cfg_minimalSizeMode = currentValue
       }
-
-      QC.TextField {
-        id: activeDot
-        Kirigami.FormData.label: i18n("Active Dot:")
-        Layout.maximumWidth: 35
-        maximumLength: 1
-        visible: cfg_dotStyle === "custom"
-      }
-      QC.TextField {
-        id: inactiveDot
-        Kirigami.FormData.label: i18n("Inactive Dot:")
-        Layout.maximumWidth: 35
-        maximumLength: 1
-        visible: cfg_dotStyle === "custom"
-      }
-      RowLayout {
-        Kirigami.FormData.label: i18n("Indicator size:")
-        QC.ComboBox {
-          textRole: "text"
-          valueRole: "value"
-          model: [
-            {
-              text: i18n("Default theme size"),
-              value: "theme"
-            },
-            {
-              text: i18n("Scale with panel"),
-              value: "panel"
-            },
-            {
-              text: i18n("Custom"),
-              value: "custom"
-            }
-          ]
-          Component.onCompleted: currentIndex = indexOfValue(cfg_indicatorSizeMode)
-          onActivated: cfg_indicatorSizeMode = currentValue
-        }
-        QC.SpinBox {
-          id: indicatorCustomSize
-          Kirigami.FormData.label: i18n("Custom size (px):")
-          from: 4
-          to: 72
-          visible: cfg_indicatorSizeMode === "custom"
-        }
-      }
-      Kirigami.Separator {
-        Kirigami.FormData.isSection: true
-        Kirigami.FormData.label: i18n("Colour Options")
-      }
-      QC.CheckBox {
-        id: indicatorCustomColorsOn
-        Kirigami.FormData.label: i18n("Colours:")
-        text: i18n("Customise colours")
-      }
-    }
-
-    RowLayout {
-      Layout.fillWidth: true
-      Layout.maximumWidth: Kirigami.Units.gridUnit * 16
-      Layout.alignment: Qt.AlignHCenter
-      visible: indicatorCustomColorsOn.checked
-      spacing: Kirigami.Units.largeSpacing
-
-      ColumnLayout {
-        Layout.fillWidth: true
-        Layout.preferredWidth: 1
-        Layout.maximumWidth: Number.POSITIVE_INFINITY
-        spacing: Kirigami.Units.smallSpacing
-
-        QC.Label {
-          Layout.alignment: Qt.AlignHCenter
-          text: i18n("Current desktop")
-        }
-        KQuickControls.ColorButton {
-          id: activeColorButton
-          Layout.alignment: Qt.AlignHCenter
-          showAlphaChannel: false
-        }
-        QC.Label {
-          Layout.alignment: Qt.AlignHCenter
-          text: activeColorButton.color.toString().toUpperCase()
-        }
-      }
-      ColumnLayout {
-        Layout.fillWidth: true
-        Layout.preferredWidth: 1
-        Layout.maximumWidth: Number.POSITIVE_INFINITY
-        spacing: Kirigami.Units.smallSpacing
-
-        QC.Label {
-          Layout.alignment: Qt.AlignHCenter
-          text: i18n("Inactive desktop")
-        }
-        KQuickControls.ColorButton {
-          id: inactiveColorButton
-          Layout.alignment: Qt.AlignHCenter
-          showAlphaChannel: false
-        }
-        QC.Label {
-          Layout.alignment: Qt.AlignHCenter
-          text: inactiveColorButton.color.toString().toUpperCase()
-        }
+      PC3.SpinBox {
+        id: minimalSizeCustom
+        from: 4
+        to: 72
+        textFromValue: value => i18n("%1px", value)
+        valueFromText: text => parseInt(text)
+        visible: cfg_minimalSizeMode === "custom"
       }
     }
   }
