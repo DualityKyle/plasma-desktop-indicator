@@ -13,6 +13,7 @@ import org.kde.kcmutils as KCM
 import org.kde.kirigami as Kirigami
 
 KCM.SimpleKCM {
+  property string cfg_indicatorType
   property int cfg_indicatorSpacing
   property string cfg_textRotation
   property string cfg_minimalStyle
@@ -20,6 +21,10 @@ KCM.SimpleKCM {
   property alias cfg_minimalCharInactive: minimalCharInactive.text
   property string cfg_minimalSizeMode
   property alias cfg_minimalSizeCustom: minimalSizeCustom.value
+
+  property alias cfg_labelWidth: labelWidth.value
+  property string cfg_labelType
+  property string cfg_highlightType
 
   Kirigami.FormLayout {
     Layout.fillWidth: true
@@ -33,7 +38,8 @@ KCM.SimpleKCM {
       textRole: "text"
       valueRole: "value"
       model: [
-        { text: i18n("Minimal"), value: "minimal" }
+        { text: i18n("Minimal"), value: "minimal" },
+        { text: i18n("Label"), value: "label" }
       ]
       Component.onCompleted: currentIndex = indexOfValue(cfg_indicatorType)
       onActivated: cfg_indicatorType = currentValue
@@ -85,12 +91,13 @@ KCM.SimpleKCM {
       ]
       Component.onCompleted: currentIndex = indexOfValue(cfg_textRotation)
       onActivated: cfg_textRotation = currentValue
-      enabled: cfg_minimalStyle !== "pill"
+      enabled: cfg_indicatorType === "label" || cfg_minimalStyle !== "pill"
     }
 
     Kirigami.Separator {
       Kirigami.FormData.isSection: true
       Kirigami.FormData.label: i18n("Minimal Indicator Options")
+      visible: cfg_indicatorType === "minimal"
     }
     QC.ComboBox {
       Kirigami.FormData.label: i18n("Style:")
@@ -112,10 +119,11 @@ KCM.SimpleKCM {
       ]
       Component.onCompleted: currentIndex = indexOfValue(cfg_minimalStyle)
       onActivated: cfg_minimalStyle = currentValue
+      visible: cfg_indicatorType === "minimal"
     }
 
     GridLayout {
-      visible: cfg_minimalStyle === "custom"
+      visible: cfg_indicatorType === "minimal" && cfg_minimalStyle === "custom"
       columns: 2
       columnSpacing: Kirigami.Units.smallSpacing
       rowSpacing: Kirigami.Units.smallSpacing
@@ -142,6 +150,8 @@ KCM.SimpleKCM {
     }
 
     RowLayout {
+      visible: cfg_indicatorType === "minimal"
+      
       Kirigami.FormData.label: i18n("Size:")
       QC.ComboBox {
         textRole: "text"
@@ -171,6 +181,61 @@ KCM.SimpleKCM {
         valueFromText: text => parseInt(text)
         visible: cfg_minimalSizeMode === "custom"
       }
+    }
+
+    Kirigami.Separator {
+      Kirigami.FormData.isSection: true
+      Kirigami.FormData.label: i18n("Label Options")
+      visible: cfg_indicatorType === "label"
+    }
+    RowLayout {
+      Kirigami.FormData.label: i18n("Indicator width:")
+      visible: cfg_indicatorType === "label"
+      
+      PC3.Slider {
+        id: labelWidth
+        Layout.minimumWidth: Kirigami.Units.gridUnit * 8
+        from: 20
+        to: 160
+        stepSize: 1
+      }
+      QC.Label {
+        id: widthLabel
+        Layout.minimumWidth: widthMetrics.width
+        horizontalAlignment: Text.AlignRight
+        text: i18n("%1px", labelWidth.value)
+
+        TextMetrics {
+          id: widthMetrics
+          font: widthLabel.font
+          text: i18n("%1px", labelWidth.to)
+        }
+      }
+    }
+    QC.ComboBox {
+      Kirigami.FormData.label: i18n("Label shows:")
+      visible: cfg_indicatorType === "label"
+      textRole: "text"
+      valueRole: "value"
+      model: [
+        { text: i18n("Desktop number"), value: "number" },
+        { text: i18n("Desktop name"), value: "name" }
+      ]
+      Component.onCompleted: currentIndex = indexOfValue(cfg_labelType)
+      onActivated: cfg_labelType = currentValue
+    }
+    QC.ComboBox {
+      Kirigami.FormData.label: i18n("Highlight:")
+      visible: cfg_indicatorType === "label"
+      textRole: "text"
+      valueRole: "value"
+      model: [
+        { text: i18n("Line"), value: "line" },
+        { text: i18n("Circle"), value: "circle" },
+        { text: i18n("None"), value: "none" }
+      ]
+      Component.onCompleted: currentIndex = indexOfValue(cfg_highlightType)
+      onActivated: cfg_highlightType = currentValue
     }
   }
 }

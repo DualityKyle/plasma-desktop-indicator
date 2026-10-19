@@ -6,7 +6,6 @@
 
 import QtQuick
 import org.kde.plasma.plasmoid
-import org.kde.plasma.components as PC3
 import org.kde.kirigami as Kirigami
 import "../components"
 

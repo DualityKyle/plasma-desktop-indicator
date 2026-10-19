@@ -66,6 +66,18 @@
       <label>Indicator size in pixels when minimalSizeMode is "custom".</label>
       <default>14</default>
     </entry>
+    <entry name="labelWidth" type="Int">
+      <label>Width in pixels of each label</label>
+      <default>35</default>
+    </entry>
+    <entry name="labelType" type="String">
+      <label>Whether labels shows the desktop number or desktop name.</label>
+      <default>number</default>
+    </entry>
+    <entry name="highlightType" type="String">
+      <label>Highlight style for the active desktop: line, circle, or none.</label>
+      <default>line</default>
+    </entry>
   </group>
   <group name="Colors">
     <entry name="minimalCustomColors" type="Bool">
