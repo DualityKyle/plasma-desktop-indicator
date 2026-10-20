@@ -78,6 +78,34 @@
       <label>Highlight style for the active desktop: line, circle, or none.</label>
       <default>line</default>
     </entry>
+    <entry name="labelSizeType" type="String">
+      <label>How label textsize is rendered: theme, scale with panel, or custom size.</label>
+      <default>theme</default>
+    </entry>
+    <entry name="labelActiveSize" type="Int">
+      <label>Active label text size in pixels when labelSizeType is "custom".</label>
+      <default>12</default>
+    </entry>    
+    <entry name="labelSize" type="Int">
+      <label>Inactive label text size in pixels when labelSizeType is "custom".</label>
+      <default>12</default>
+    </entry> 
+    <entry name="labelActiveBold" type="Bool">
+      <label>Whether the current desktop label text is bold.</label>
+      <default>false</default>
+    </entry>
+    <entry name="labelBold" type="Bool">
+      <label>Whether inactive desktop label text is bold.</label>
+      <default>false</default>
+    </entry>    
+    <entry name="labelActiveItalic" type="Bool">
+      <label>Whether current desktop label text is italic.</label>
+      <default>false</default>
+    </entry>
+    <entry name="labelItalic" type="Bool">
+      <label>Whether inactive desktop label text is italic.</label>
+      <default>false</default>
+    </entry>
   </group>
   <group name="Colors">
     <entry name="minimalCustomColors" type="Bool">

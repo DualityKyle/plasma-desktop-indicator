@@ -26,6 +26,14 @@ KCM.SimpleKCM {
   property string cfg_labelType
   property string cfg_highlightType
 
+  property string cfg_labelSizeType
+  property alias cfg_labelActiveSize: labelActiveSize.value
+  property alias cfg_labelSize: labelSize.value  
+  property alias cfg_labelActiveBold: labelActiveBold.checked
+  property alias cfg_labelBold: labelBold.checked
+  property alias cfg_labelActiveItalic: labelActiveItalic.checked
+  property alias cfg_labelItalic: labelItalic.checked
+
   Kirigami.FormLayout {
     Layout.fillWidth: true
     
@@ -236,6 +244,86 @@ KCM.SimpleKCM {
       ]
       Component.onCompleted: currentIndex = indexOfValue(cfg_highlightType)
       onActivated: cfg_highlightType = currentValue
+    }
+    RowLayout {
+      Kirigami.FormData.label: i18n("Text size:")
+      visible: cfg_indicatorType === "label"
+      QC.ComboBox {
+        textRole: "text"
+        valueRole: "value"
+        model: [
+          {
+            text: i18n("Default theme size"),
+            value: "theme"
+          },
+          {
+            text: i18n("Scale with panel"),
+            value: "scale"
+          },
+          {
+            text: i18n("Custom"),
+            value: "custom"
+          }
+        ]
+        Component.onCompleted: currentIndex = indexOfValue(cfg_labelSizeType)
+        onActivated: cfg_labelSizeType = currentValue
+      }
+    }
+    RowLayout {
+      Kirigami.FormData.label: i18n("Current desktop text:")
+      visible: cfg_indicatorType === "label"
+      QC.ToolButton {
+        id: labelActiveBold
+        icon.name: "format-text-bold"
+        display: QC.AbstractButton.IconOnly
+        checkable: true
+        QC.ToolTip.text: i18n("Bold")
+        QC.ToolTip.visible: hovered
+        QC.ToolTip.delay: Kirigami.Units.toolTipDelay
+      }
+      QC.ToolButton {
+        id: labelActiveItalic
+        icon.name: "format-text-italic"
+        display: QC.AbstractButton.IconOnly
+        checkable: true
+        QC.ToolTip.text: i18n("Italic")
+        QC.ToolTip.visible: hovered
+        QC.ToolTip.delay: Kirigami.Units.toolTipDelay
+      }
+      PC3.SpinBox {
+        id: labelActiveSize
+        from: 4
+        to: 72
+        visible: cfg_labelSizeType === "custom"
+      }      
+    }
+    RowLayout {
+      Kirigami.FormData.label: i18n("Other desktops' text:")
+      visible: cfg_indicatorType === "label"
+      QC.ToolButton {
+        id: labelBold
+        icon.name: "format-text-bold"
+        display: QC.AbstractButton.IconOnly
+        checkable: true
+        QC.ToolTip.text: i18n("Bold")
+        QC.ToolTip.visible: hovered
+        QC.ToolTip.delay: Kirigami.Units.toolTipDelay
+      }
+      QC.ToolButton {
+        id: labelItalic
+        icon.name: "format-text-italic"
+        display: QC.AbstractButton.IconOnly
+        checkable: true
+        QC.ToolTip.text: i18n("Italic")
+        QC.ToolTip.visible: hovered
+        QC.ToolTip.delay: Kirigami.Units.toolTipDelay
+      }
+      PC3.SpinBox {
+        id: labelSize
+        from: 4
+        to: 72
+        visible: cfg_labelSizeType === "custom"
+      }      
     }
   }
 }

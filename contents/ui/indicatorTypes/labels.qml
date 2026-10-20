@@ -22,9 +22,24 @@ Item {
     "circle": "../highlightTypes/highlightCircle.qml"
   })
   readonly property bool textRotated: labelText.rotated
+  readonly property real activeTextSize: sizeFor(cfg.labelActiveSize)
+  readonly property real inactiveTextSize: sizeFor(cfg.labelSize)
 
-  implicitWidth: textRotated ? labelText.implicitWidth : cfg.labelWidth
-  implicitHeight: textRotated ? cfg.labelWidth : labelText.implicitHeight
+  function sizeFor(customSize) {
+    switch (cfg.labelSizeType) {
+      case "scale": return Math.max(6, Math.round(containerSize * 0.5));
+      case "custom": return customSize;
+      default: return Kirigami.Theme.defaultFont.pixelSize;
+    }
+  }
+
+  implicitWidth: textRotated ? sizeMetrics.height : cfg.labelWidth
+  implicitHeight: textRotated ? cfg.labelWidth : sizeMetrics.height
+
+  FontMetrics {
+    id: sizeMetrics
+    font.pixelSize: Math.max(root.activeTextSize, root.inactiveTextSize)
+  }
 
   Loader {
     id: highlight
@@ -46,6 +61,9 @@ Item {
     maxLength: root.cfg.labelWidth
     elide: Text.ElideLeft
     color: Kirigami.Theme.textColor
+    font.pixelSize: root.desktop.isCurrent ? root.activeTextSize : root.inactiveTextSize
+    font.bold: root.desktop.isCurrent ? root.cfg.labelActiveBold : root.cfg.labelBold
+    font.italic: root.desktop.isCurrent ? root.cfg.labelActiveItalic : root.cfg.labelItalic
     text: {
       if (root.cfg.labelType === "name" && root.desktop.name !== "")
         return root.desktop.name;
