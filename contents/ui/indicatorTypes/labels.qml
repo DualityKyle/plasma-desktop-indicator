@@ -43,6 +43,8 @@ Item {
 
     anchors.centerIn: parent
     vertical: root.vertical
+    maxLength: root.cfg.labelWidth
+    elide: Text.ElideLeft
     color: Kirigami.Theme.textColor
     text: {
       if (root.cfg.labelType === "name" && root.desktop.name !== "")

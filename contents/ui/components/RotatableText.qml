@@ -16,6 +16,7 @@ Item {
   property alias font: label.font
   property alias color: label.color
   property alias text: label.text
+  property alias elide: label.elide
   property real maxLength: -1
 
   readonly property var cfg: Plasmoid.configuration
@@ -36,8 +37,8 @@ Item {
   }
   readonly property bool rotated: angle !== 0
 
-  implicitWidth:  rotated ? label.implicitHeight : label.implicitWidth
-  implicitHeight: rotated ? label.implicitWidth  : label.implicitHeight
+  implicitWidth:  rotated ? label.implicitHeight : label.width
+  implicitHeight: rotated ? label.width : label.implicitHeight
 
   PC3.Label {
     id: label
