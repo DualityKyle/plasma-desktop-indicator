@@ -85,11 +85,15 @@
     <entry name="labelActiveSize" type="Int">
       <label>Active label text size in pixels when labelSizeType is "custom".</label>
       <default>12</default>
-    </entry>    
+    </entry>
     <entry name="labelSize" type="Int">
       <label>Inactive label text size in pixels when labelSizeType is "custom".</label>
       <default>12</default>
-    </entry> 
+    </entry>
+    <entry name="labelWrap" type="Bool">
+      <label>Whether to wrap label text if there is space for multiple lines</label>
+      <default>false</default>
+    </entry>
     <entry name="labelActiveBold" type="Bool">
       <label>Whether the current desktop label text is bold.</label>
       <default>false</default>

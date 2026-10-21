@@ -71,6 +71,7 @@ Item {
     font.italic: root.desktop.isCurrent ? root.cfg.labelActiveItalic : root.cfg.labelItalic
     text: root.labelString
 
+    wrapText: root.cfg.labelWrap
     maxLength: root.maxLineLength
     maxHeight: root.lineStackSpace
     horizontalAlignment: Text.AlignHCenter

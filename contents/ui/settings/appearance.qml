@@ -33,6 +33,7 @@ KCM.SimpleKCM {
   property alias cfg_labelBold: labelBold.checked
   property alias cfg_labelActiveItalic: labelActiveItalic.checked
   property alias cfg_labelItalic: labelItalic.checked
+  property alias cfg_labelWrap: labelWrap.checked
 
   Kirigami.FormLayout {
     Layout.fillWidth: true
@@ -324,6 +325,12 @@ KCM.SimpleKCM {
         to: 72
         visible: cfg_labelSizeType === "custom"
       }      
+    }
+    QC.CheckBox {
+      id: labelWrap
+      text: i18n("Wrap text")
+      checked: cfg_labelWrap
+      onToggled: cfg_labelWrap = checked
     }
   }
 }
