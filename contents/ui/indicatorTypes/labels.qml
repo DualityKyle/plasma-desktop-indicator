@@ -21,7 +21,17 @@ Item {
     "line": "../highlightTypes/highlightLine.qml",
     "circle": "../highlightTypes/highlightCircle.qml"
   })
+
+  readonly property string labelString: {
+    if (cfg.labelType === "name" && desktop.name !== "")
+      return desktop.name;
+    return String(desktop.number);
+  }
+
   readonly property bool textRotated: labelText.rotated
+  readonly property real verticalCellHeight: Kirigami.Units.gridUnit * 2
+  readonly property real cellLength: vertical && !textRotated ? verticalCellHeight : cfg.labelWidth
+
   readonly property real activeTextSize: sizeFor(cfg.labelActiveSize)
   readonly property real inactiveTextSize: sizeFor(cfg.labelSize)
 
@@ -33,13 +43,11 @@ Item {
     }
   }
 
-  implicitWidth: textRotated ? sizeMetrics.height : cfg.labelWidth
-  implicitHeight: textRotated ? cfg.labelWidth : sizeMetrics.height
+  implicitWidth: vertical ? containerSize : cellLength
+  implicitHeight: vertical ? cellLength : containerSize
 
-  FontMetrics {
-    id: sizeMetrics
-    font.pixelSize: Math.max(root.activeTextSize, root.inactiveTextSize)
-  }
+  readonly property real maxLineLength: textRotated ? implicitHeight : implicitWidth
+  readonly property real lineStackSpace: textRotated ? implicitWidth : implicitHeight
 
   Loader {
     id: highlight
@@ -50,24 +58,21 @@ Item {
 
     Binding { target: highlight.item; property: "active"; value: root.desktop.isCurrent }
     Binding { target: highlight.item; property: "vertical"; value: root.vertical }
-    Binding { target: highlight.item; property: "containerSize"; value: root.containerSize }
   }
 
   RotatableText {
     id: labelText
-
-    anchors.centerIn: parent
     vertical: root.vertical
-    maxLength: root.cfg.labelWidth
-    elide: Text.ElideLeft
+    anchors.centerIn: parent
+
     color: Kirigami.Theme.textColor
     font.pixelSize: root.desktop.isCurrent ? root.activeTextSize : root.inactiveTextSize
     font.bold: root.desktop.isCurrent ? root.cfg.labelActiveBold : root.cfg.labelBold
     font.italic: root.desktop.isCurrent ? root.cfg.labelActiveItalic : root.cfg.labelItalic
-    text: {
-      if (root.cfg.labelType === "name" && root.desktop.name !== "")
-        return root.desktop.name;
-      return String(root.desktop.number);
-    }
+    text: root.labelString
+
+    maxLength: root.maxLineLength
+    maxHeight: root.lineStackSpace
+    horizontalAlignment: Text.AlignHCenter
   }
 }

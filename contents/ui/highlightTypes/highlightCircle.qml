@@ -12,15 +12,13 @@ Item {
 
   property bool active: false
   property bool vertical: false
-  property real containerSize: 0
 
   Rectangle {
     visible: root.active
     anchors.centerIn: parent
-    color: Kirigami.Theme.highlightColor
 
-    readonly property real wanted: Math.min(root.width, root.height) + Kirigami.Units.smallSpacing * 2
-    width: root.containerSize > 0 ? Math.min(wanted, root.containerSize) : wanted
+    color: Kirigami.Theme.highlightColor
+    width: Math.min(Kirigami.Units.gridUnit * 1.5, root.width, root.height)
     height: width
     radius: width / 2
   }

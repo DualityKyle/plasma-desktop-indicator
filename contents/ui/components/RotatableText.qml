@@ -16,8 +16,10 @@ Item {
   property alias font: label.font
   property alias color: label.color
   property alias text: label.text
+  property alias horizontalAlignment: label.horizontalAlignment
   property alias elide: label.elide
   property real maxLength: -1
+  property real maxHeight: -1
 
   readonly property var cfg: Plasmoid.configuration
   readonly property real angle: {
@@ -36,14 +38,20 @@ Item {
     }
   }
   readonly property bool rotated: angle !== 0
+  readonly property bool limited: maxLength > 0
 
-  implicitWidth:  rotated ? label.implicitHeight : label.width
-  implicitHeight: rotated ? label.width : label.implicitHeight
+  implicitWidth:  rotated ? label.height : label.width
+  implicitHeight: rotated ? label.width : label.height
 
   PC3.Label {
     id: label
     anchors.centerIn: parent
-    width: root.maxLength > 0 ? Math.min(implicitWidth, root.maxLength) : implicitWidth
     rotation: root.angle
+
+    width: root.limited ? root.maxLength : implicitWidth
+    height: root.limited && root.maxHeight > 0 ? root.maxHeight : implicitHeight
+    verticalAlignment: Text.AlignVCenter
+    wrapMode: root.limited ? Text.WordWrap : Text.NoWrap
+    elide: root.limited ? Text.ElideRight : Text.ElideNone
   }
 }
