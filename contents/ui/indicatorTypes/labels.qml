@@ -30,14 +30,17 @@ Item {
 
   readonly property bool textRotated: labelText.rotated
   readonly property real verticalCellHeight: Kirigami.Units.gridUnit * 2
-  readonly property real cellLength: vertical && !textRotated ? verticalCellHeight : cfg.labelWidth
+  readonly property real cellLength: vertical && !textRotated ? verticalCellHeight : fitsText ? textLength : cfg.labelWidth
 
   readonly property real activeTextSize: sizeFor(cfg.labelActiveSize)
   readonly property real inactiveTextSize: sizeFor(cfg.labelSize)
 
+  readonly property bool fitsText: cfg.labelSizeType === "scale"
+  readonly property real textLength: Math.ceil(labelMetrics.advanceWidth) + Kirigami.Units.smallSpacing * 2
+
   function sizeFor(customSize) {
     switch (cfg.labelSizeType) {
-      case "scale": return Math.max(6, Math.round(containerSize * 0.5));
+      case "scale": return Math.max(6, Math.round(containerSize * 0.4));
       case "custom": return customSize;
       default: return Kirigami.Theme.defaultFont.pixelSize;
     }
@@ -58,6 +61,14 @@ Item {
 
     Binding { target: highlight.item; property: "active"; value: root.desktop.isCurrent }
     Binding { target: highlight.item; property: "vertical"; value: root.vertical }
+  }
+
+  TextMetrics {
+    id: labelMetrics
+    font.pixelSize: Math.max(root.activeTextSize, root.inactiveTextSize)
+    font.bold: root.cfg.labelActiveBold || root.cfg.labelBold
+    font.italic: root.cfg.labelActiveItalic || root.cfg.labelItalic
+    text: root.labelString
   }
 
   RotatableText {
