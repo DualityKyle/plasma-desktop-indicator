@@ -14,7 +14,7 @@ Item {
 
   property var desktop: ({ isCurrent: false })
   property bool vertical: false
-  property real containerSize: 0
+  property real panelThickness: 0
 
   readonly property bool isPill: cfg.minimalStyle === "pill"
   readonly property int pillSize: root.baseSize
@@ -22,7 +22,7 @@ Item {
   readonly property var cfg: Plasmoid.configuration
   readonly property real baseSize: {
     switch (cfg.minimalSizeMode) {
-      case "panel": return Math.max(6, containerSize);
+      case "panel": return Math.max(6, panelThickness);
       case "custom": return cfg.minimalSizeCustom;
       default: return Kirigami.Theme.defaultFont.pixelSize;
     }
