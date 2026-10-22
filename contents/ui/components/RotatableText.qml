@@ -22,6 +22,7 @@ Item {
   property bool wrapText: false
 
   readonly property var cfg: Plasmoid.configuration
+  readonly property bool hasMaxLength: maxLength > 0
   readonly property real angle: {
     if (!vertical) {
       return 0
@@ -94,10 +95,13 @@ Item {
     anchors.centerIn: parent
     rotation: root.angle
 
-    width: root.maxLength
+    width: root.hasMaxLength ? root.maxLength : implicitWidth
     height: root.maxHeight > 0 ? root.maxHeight : implicitHeight
 
     text: {
+      if (!root.hasMaxLength)
+        return root.text;
+      
       void metrics.font;
 
       const maxLines = root.wrapText && root.maxHeight > 0
