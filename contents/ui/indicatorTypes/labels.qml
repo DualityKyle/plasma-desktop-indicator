@@ -14,13 +14,9 @@ Item {
 
   property var desktop: ({ isCurrent: false, number: 1, name: "" })
   property bool vertical: false
-  property real containerSize: 0
+  property real panelThickness: 0
 
   readonly property var cfg: Plasmoid.configuration
-  readonly property var highlightTypes: ({
-    "line": "../highlightTypes/highlightLine.qml",
-    "circle": "../highlightTypes/highlightCircle.qml"
-  })
 
   readonly property string labelString: {
     if (cfg.labelType === "name" && desktop.name !== "")
@@ -40,17 +36,22 @@ Item {
 
   function sizeFor(customSize) {
     switch (cfg.labelSizeType) {
-      case "scale": return Math.max(6, Math.round(containerSize * 0.4));
+      case "scale": return Math.max(6, Math.round(panelThickness * 0.4));
       case "custom": return customSize;
       default: return Kirigami.Theme.defaultFont.pixelSize;
     }
   }
 
-  implicitWidth: vertical ? containerSize : cellLength
-  implicitHeight: vertical ? cellLength : containerSize
+  implicitWidth: vertical ? panelThickness : cellLength
+  implicitHeight: vertical ? cellLength : panelThickness
 
   readonly property real maxLineLength: textRotated ? implicitHeight : implicitWidth
   readonly property real lineStackSpace: textRotated ? implicitWidth : implicitHeight
+
+  Highlighter {
+    current: root.desktop.isCurrent
+    vertical: root.vertical
+  }
 
   Loader {
     id: highlight

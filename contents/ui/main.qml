@@ -99,7 +99,7 @@ PlasmoidItem {
 
           Binding {
             target: indicatorContent.item
-            property: "containerSize"
+            property: "panelThickness"
             value: root.vertical ? indicator.width : indicator.height
           }
         }
