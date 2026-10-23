@@ -12,12 +12,13 @@ Item {
 
   property bool active: false
   property bool vertical: false
+  property color color: Kirigami.Theme.highlightColor
 
   Rectangle {
     visible: root.active
     anchors.centerIn: parent
 
-    color: Kirigami.Theme.highlightColor
+    color: root.color
     width: Math.min(Kirigami.Units.gridUnit * 1.5, root.width, root.height)
     height: width
     radius: width / 2

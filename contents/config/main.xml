@@ -120,17 +120,25 @@
     </entry>
   </group>
   <group name="Colors">
-    <entry name="minimalCustomColors" type="Bool">
-      <label>Allow indicator text colours to be customised.</label>
+    <entry name="indicatorCustomColors" type="Bool">
+      <label>Allow indicator text/label colours to be customised.</label>
       <default>false</default>
     </entry>
-    <entry name="minimalColorActive" type="Color">
-      <label>Colour of the current desktop's indicator when minimalCustomColors is "custom".</label>
+    <entry name="indicatorColorActive" type="Color">
+      <label>Colour of the current desktop's indicator when indicatorCustomColors is true.</label>
       <default>#ffffff</default>
     </entry>
-    <entry name="minimalColorInactive" type="Color">
-      <label>Colour of inactive desktop indicators when minimalCustomColors is "custom".</label>
+    <entry name="indicatorColorInactive" type="Color">
+      <label>Colour of inactive desktop indicators when indicatorCustomColors is true.</label>
       <default>#ffffff</default>
+    </entry>
+    <entry name="highlightCustomColors" type="Bool">
+      <label>Allow highlight colours to be customised.</label>
+      <default>false</default>
+    </entry>
+    <entry name="highlightColor" type="Color">
+      <label>Colour of highlight colours when highlightCustomColors is true.</label>
+      <default>#3daee9</default>
     </entry>
   </group>
 </kcfg>

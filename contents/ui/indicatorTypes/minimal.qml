@@ -27,8 +27,8 @@ Item {
       default: return Kirigami.Theme.defaultFont.pixelSize;
     }
   }
-  readonly property color indicatorCustomColor: cfg.minimalCustomColors
-    ? (desktop.isCurrent ? cfg.minimalColorActive : cfg.minimalColorInactive)
+  readonly property color indicatorCustomColor: cfg.indicatorCustomColors
+    ? (desktop.isCurrent ? cfg.indicatorColorActive : cfg.indicatorColorInactive)
     : Kirigami.Theme.textColor
 
   implicitWidth: isPill ? pill.width : minimalText.implicitWidth

@@ -6,6 +6,7 @@
 
 import QtQuick
 import org.kde.plasma.plasmoid
+import org.kde.kirigami as Kirigami
 
 Loader {
   id: root
@@ -21,6 +22,7 @@ Loader {
     "circle": "../highlightTypes/highlightCircle.qml"
   })
 
+  readonly property color highlightColor: cfg.highlightCustomColors ? cfg.highlightColor : Kirigami.Theme.highlightColor
   readonly property real lineInset: type === "line" ? 3: 0
   readonly property real contentOffset: 
     (Plasmoid.location === PlasmaCore.Types.TopEdge || Plasmoid.location === PlasmaCore.Types.LeftEdge) 
@@ -33,4 +35,5 @@ Loader {
 
   Binding { target: root.item; property: "active"; value: root.current }
   Binding { target: root.item; property: "vertical"; value: root.vertical }
+  Binding { target: root.item; property: "color"; value: root.highlightColor }
 }

@@ -83,7 +83,11 @@ Item {
     anchors.horizontalCenterOffset: root.vertical ? labelHighlighter.contentOffset : 0
     anchors.verticalCenterOffset: root.vertical ? 0 : labelHighlighter.contentOffset
 
-    color: Kirigami.Theme.textColor
+    color: {
+      if (!root.cfg.indicatorCustomColors)
+        return Kirigami.Theme.textColor;
+      return root.desktop.isCurrent ? root.cfg.indicatorColorActive : root.cfg.indicatorColorInactive
+    }
     font.pixelSize: root.desktop.isCurrent ? root.activeTextSize : root.inactiveTextSize
     font.bold: root.desktop.isCurrent ? root.cfg.labelActiveBold : root.cfg.labelBold
     font.italic: root.desktop.isCurrent ? root.cfg.labelActiveItalic : root.cfg.labelItalic

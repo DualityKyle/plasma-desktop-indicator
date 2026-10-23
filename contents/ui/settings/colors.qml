@@ -12,46 +12,71 @@ import org.kde.kcmutils as KCM
 import org.kde.kirigami as Kirigami
 
 KCM.SimpleKCM {
-  property alias cfg_minimalCustomColors: minimalCustomColors.checked
-  property alias cfg_minimalColorActive: minimalColorActiveButton.color
-  property alias cfg_minimalColorInactive: minimalColorInactiveButton.color
+  property alias cfg_indicatorCustomColors: indicatorCustomColors.checked
+  property alias cfg_indicatorColorActive: indicatorColorActiveButton.color
+  property alias cfg_indicatorColorInactive: indicatorColorInactiveButton.color
+  property alias cfg_highlightCustomColors: highlightCustomColors.checked
+  property alias cfg_highlightColor: highlightColorButton.color
 
   Kirigami.FormLayout {
     QC.Switch {
-      id: minimalCustomColors
+      id: indicatorCustomColors
       Kirigami.FormData.label: i18n("Colours:")
-      text: i18n("Customise colours")
+      text: i18n("Customise indicator colours")
+    }
+    QC.Switch {
+      id: highlightCustomColors
+      Kirigami.FormData.label: i18n("Colours:")
+      text: i18n("Customise highlight colours")
     }
 
     Kirigami.Separator {
       Kirigami.FormData.isSection: true
       Kirigami.FormData.label: i18n("Text / Labels")
-      enabled: minimalCustomColors.checked
+      enabled: indicatorCustomColors.checked
     }
     RowLayout {
       Kirigami.FormData.label: i18n("Active desktop:")
-      enabled: minimalCustomColors.checked
+      enabled: indicatorCustomColors.checked
       spacing: Kirigami.Units.largeSpacing
 
       KQuickControls.ColorButton {
-        id: minimalColorActiveButton
+        id: indicatorColorActiveButton
         showAlphaChannel: false
       }
       QC.Label {
-        text: minimalColorActiveButton.color.toString().toUpperCase()
+        text: indicatorColorActiveButton.color.toString().toUpperCase()
       }
     }
     RowLayout {
       Kirigami.FormData.label: i18n("Inactive desktop:")
-      enabled: minimalCustomColors.checked
+      enabled: indicatorCustomColors.checked
       spacing: Kirigami.Units.largeSpacing
 
       KQuickControls.ColorButton {
-        id: minimalColorInactiveButton
+        id: indicatorColorInactiveButton
         showAlphaChannel: false
       }
       QC.Label {
-        text: minimalColorInactiveButton.color.toString().toUpperCase()
+        text: indicatorColorInactiveButton.color.toString().toUpperCase()
+      }
+    }
+    Kirigami.Separator {
+      Kirigami.FormData.isSection: true
+      Kirigami.FormData.label: i18n("Highlights")
+      enabled: highlightCustomColors.checked
+    }
+    RowLayout {
+      Kirigami.FormData.label: i18n("Active desktop:")
+      enabled: highlightCustomColors.checked
+      spacing: Kirigami.Units.largeSpacing
+
+      KQuickControls.ColorButton {
+        id: highlightColorButton
+        showAlphaChannel: false
+      }
+      QC.Label {
+        text: highlightColorButton.color.toString().toUpperCase()
       }
     }
   }

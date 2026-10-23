@@ -14,6 +14,7 @@ Item {
 
   property bool active: false
   property bool vertical: false
+  property color color: Kirigami.Theme.highlightColor
   readonly property int thickness: 3
   
   // Distance from label edge to cell edge 
@@ -30,7 +31,7 @@ Item {
   Rectangle {
     visible: root.active
 
-    color: Kirigami.Theme.highlightColor
+    color: root.color
 
     width: root.vertical ? root.thickness : root.width
     height: root.vertical ? root.height : root.thickness
