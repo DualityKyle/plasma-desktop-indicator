@@ -21,6 +21,12 @@ Loader {
     "circle": "../highlightTypes/highlightCircle.qml"
   })
 
+  readonly property real lineInset: type === "line" ? 3: 0
+  readonly property real contentOffset: 
+    (Plasmoid.location === PlasmaCore.Types.TopEdge || Plasmoid.location === PlasmaCore.Types.LeftEdge) 
+      ? -lineInset / 2 
+      : lineInset / 2
+
   anchors.fill: parent
   active: type !== "none"
   source: highlightTypes[type] ?? ""

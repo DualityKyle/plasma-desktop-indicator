@@ -21,6 +21,7 @@ PlasmoidItem {
     "minimal": "indicatorTypes/minimal.qml",
     "menu": "indicatorTypes/menu.qml",
     "label": "indicatorTypes/labels.qml",
+    "icon": "indicatorTypes/icons.qml",
     "position": "indicatorTypes/position.qml"
   })
 

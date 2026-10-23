@@ -45,10 +45,13 @@ Item {
   implicitWidth: vertical ? panelThickness : cellLength
   implicitHeight: vertical ? cellLength : panelThickness
 
-  readonly property real maxLineLength: textRotated ? implicitHeight : implicitWidth
-  readonly property real lineStackSpace: textRotated ? implicitWidth : implicitHeight
+  readonly property real realThickness: panelThickness - labelHighlighter.lineInset
+  readonly property real maxLineLength: vertical && !textRotated ? realThickness : cellLength
+  readonly property real lineStackSpace: vertical && !textRotated ? cellLength : realThickness
 
   Highlighter {
+    id: labelHighlighter
+
     current: root.desktop.isCurrent
     vertical: root.vertical
   }
@@ -75,7 +78,10 @@ Item {
   RotatableText {
     id: labelText
     vertical: root.vertical
+
     anchors.centerIn: parent
+    anchors.horizontalCenterOffset: root.vertical ? labelHighlighter.contentOffset : 0
+    anchors.verticalCenterOffset: root.vertical ? 0 : labelHighlighter.contentOffset
 
     color: Kirigami.Theme.textColor
     font.pixelSize: root.desktop.isCurrent ? root.activeTextSize : root.inactiveTextSize

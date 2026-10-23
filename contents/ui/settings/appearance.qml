@@ -11,8 +11,12 @@ import org.kde.kquickcontrols as KQuickControls
 import org.kde.plasma.components as PC3
 import org.kde.kcmutils as KCM
 import org.kde.kirigami as Kirigami
+import org.kde.taskmanager as TaskManager
+import org.kde.iconthemes as KIconThemes
 
 KCM.SimpleKCM {
+  id: appearancePage
+
   property string cfg_indicatorType
   property int cfg_indicatorSpacing
   property string cfg_textRotation
@@ -35,6 +39,34 @@ KCM.SimpleKCM {
   property alias cfg_labelItalic: labelItalic.checked
   property alias cfg_labelWrap: labelWrap.checked
 
+  property var cfg_iconNames: []
+  property alias cfg_iconDesaturateInactive: iconDesaturateInactive.checked
+  property var cfg_iconNamesDefault
+
+  property int pickingIndex: -1
+
+  function iconAt(i) {
+    return (cfg_iconNames ?? [])[i] ?? "";
+  }
+
+  function setIconName(i, name) {
+    const names = (cfg_iconNames ?? []).slice();
+    while (names.length <= i)
+      names.push("");
+    names[i] = name;
+    cfg_iconNames = names;
+  }
+
+  TaskManager.VirtualDesktopInfo { id: desktopInfo }
+
+  KIconThemes.IconDialog {
+    id: iconDialog
+    onIconNameChanged: {
+      if (appearancePage.pickingIndex >= 0 && iconName)
+        appearancePage.setIconName(appearancePage.pickingIndex, iconName);
+    }
+  }  
+
   Kirigami.FormLayout {
     Layout.fillWidth: true
     
@@ -48,7 +80,8 @@ KCM.SimpleKCM {
       valueRole: "value"
       model: [
         { text: i18n("Minimal"), value: "minimal" },
-        { text: i18n("Label"), value: "label" }
+        { text: i18n("Labels"), value: "label" },
+        { text: i18n("Icons"), value: "icon" }
       ]
       Component.onCompleted: currentIndex = indexOfValue(cfg_indicatorType)
       onActivated: cfg_indicatorType = currentValue
@@ -328,9 +361,61 @@ KCM.SimpleKCM {
     }
     QC.CheckBox {
       id: labelWrap
-      text: i18n("Wrap text")
-      checked: cfg_labelWrap
-      onToggled: cfg_labelWrap = checked
+      Kirigami.FormData.label: i18n("Wrap text:")
+    }
+
+    Kirigami.Separator {
+      Kirigami.FormData.isSection: true
+      Kirigami.FormData.label: i18n("Icon Options")
+      visible: cfg_indicatorType === "icon"
+    }
+    QC.CheckBox {
+      id: iconDesaturateInactive
+      Kirigami.FormData.label: i18n("Inactive desktops:")
+      text: i18n("Show icons in greyscale")
+    }    
+    QC.Button {
+      text: i18n("Restore default icons")
+      icon.name: "edit-undo"
+      onClicked: appearancePage.cfg_iconNames = (appearancePage.cfg_iconNamesDefault ?? []).slice()
+    }
+    Repeater {
+      model: desktopInfo.numberOfDesktops
+
+      RowLayout {
+        Kirigami.FormData.label: i18n("%1:", desktopInfo.desktopNames[index] || i18n("Desktop %1", index + 1))
+        visible: cfg_indicatorType === "icon"
+
+        QC.Button {
+          icon.name: appearancePage.iconAt(index) || "desktop"
+          display: QC.AbstractButton.IconOnly
+          QC.ToolTip.text: i18n("Choose icon…")
+          QC.ToolTip.visible: hovered
+          QC.ToolTip.delay: Kirigami.Units.toolTipDelay
+          onClicked: {
+            appearancePage.pickingIndex = index;
+            //iconDialog.iconName = "";
+            iconDialog.open();
+          }
+        }
+        QC.TextField {
+          Layout.preferredWidth: Kirigami.Units.gridUnit * 12
+          placeholderText: i18n("Icon name or file path")
+          text: appearancePage.iconAt(index)
+          onEditingFinished: {
+            appearancePage.setIconName(index, text.trim());
+            text = Qt.binding(() => appearancePage.iconAt(index));
+          }
+        }
+        QC.ToolButton {
+          icon.name: "edit-clear"
+          display: QC.AbstractButton.IconOnly
+          visible: appearancePage.iconAt(index) !== ""
+          QC.ToolTip.text: i18n("Reset to default")
+          QC.ToolTip.visible: hovered
+          onClicked: appearancePage.setIconName(index, "")
+        }
+      }
     }
   }
 }
