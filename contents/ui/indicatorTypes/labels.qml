@@ -56,17 +56,6 @@ Item {
     vertical: root.vertical
   }
 
-  Loader {
-    id: highlight
-
-    anchors.fill: parent
-    active: root.cfg.highlightType !== "none"
-    source: root.highlightTypes[root.cfg.highlightType] ?? ""
-
-    Binding { target: highlight.item; property: "active"; value: root.desktop.isCurrent }
-    Binding { target: highlight.item; property: "vertical"; value: root.vertical }
-  }
-
   TextMetrics {
     id: labelMetrics
     font.pixelSize: Math.max(root.activeTextSize, root.inactiveTextSize)

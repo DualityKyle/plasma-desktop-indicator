@@ -17,8 +17,6 @@ Item {
   property color color: Kirigami.Theme.highlightColor
   readonly property int thickness: 3
   
-  // Distance from label edge to cell edge 
-  readonly property real edgeGap: Math.max(0, Math.round((panelThickness - (vertical ? width : height)) / 2))
   readonly property string lineSide: {
     switch (Plasmoid.location) {
       case PlasmaCore.Types.TopEdge:   return "bottom"
