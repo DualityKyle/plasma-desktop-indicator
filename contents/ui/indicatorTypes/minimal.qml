@@ -15,6 +15,7 @@ Item {
   property var desktop: ({ isCurrent: false })
   property bool vertical: false
   property bool hovered: false
+  property bool occupied: false
   property real panelThickness: 0
 
   readonly property bool isPill: cfg.minimalStyle === "pill"

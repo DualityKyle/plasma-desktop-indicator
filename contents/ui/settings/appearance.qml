@@ -29,6 +29,7 @@ KCM.SimpleKCM {
   property alias cfg_labelWidth: labelWidth.value
   property string cfg_labelType
   property string cfg_highlightType
+  property alias cfg_highlightOccupied: highlightOccupied.checked  
 
   property string cfg_labelSizeType
   property alias cfg_labelActiveSize: labelActiveSize.value
@@ -303,6 +304,10 @@ KCM.SimpleKCM {
       ]
       Component.onCompleted: currentIndex = indexOfValue(cfg_highlightType)
       onActivated: cfg_highlightType = currentValue
+    }
+    QC.CheckBox {
+      id: highlightOccupied
+      Kirigami.FormData.label: i18n("Show desktops with open windows:")
     }
     QC.Button {
       visible: cfg_indicatorType === "label" && cfg_labelType === "list"

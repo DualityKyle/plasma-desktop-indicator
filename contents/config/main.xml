@@ -86,6 +86,10 @@
       <label>Highlight style for the active desktop: line, circle, or none.</label>
       <default>line</default>
     </entry>
+    <entry name="highlightOccupied" type="Bool">
+      <label>Show a faint highlight on inactive desktops that have open windows.</label>
+      <default>true</default>
+    </entry>
     <entry name="labelSizeType" type="String">
       <label>How label textsize is rendered: theme, scale with panel, or custom size.</label>
       <default>theme</default>

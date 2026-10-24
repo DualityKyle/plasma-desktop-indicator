@@ -26,6 +26,7 @@ PlasmoidItem {
   })
 
   TaskManager.VirtualDesktopInfo { id: desktopInfo }
+  TaskManager.ActivityInfo { id: activityInfo }
   DesktopHandlers { id: actions; info: desktopInfo; cfg: root.cfg; }
 
   fullRepresentation: GridLayout {
@@ -109,6 +110,20 @@ PlasmoidItem {
             property: "hovered"
             value: hover.hovered && [root.cfg.leftClickAction, root.cfg.rightClickAction].includes("goto")
           }
+
+          Binding {
+            target: indicatorContent.item
+            property: "occupied"
+            value: root.cfg.highlightOccupied && desktopWindows.count > 0
+          }
+        }
+
+        TaskManager.TasksModel {
+          id: desktopWindows
+          virtualDesktop: desktopInfo.desktopIds[index]
+          activity: activityInfo.currentActivity
+          filterByVirtualDesktop: true
+          filterByActivity: true
         }
 
         HoverHandler { id: hover }
