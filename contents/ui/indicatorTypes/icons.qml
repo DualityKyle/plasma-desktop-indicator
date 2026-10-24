@@ -29,6 +29,11 @@ Item {
   readonly property real iconSize: Math.max(8, panelThickness)
   readonly property real iconLength: iconSize + Kirigami.Units.smallSpacing * 2
 
+  readonly property string colorMode: cfg.iconColorMode
+  readonly property bool tinted: colorMode === "custom"
+  readonly property bool greyscale: colorMode === "greyscale" || (colorMode === "greyInactive" && !desktop.isCurrent)
+  readonly property color iconColor: desktop.isCurrent ? cfg.indicatorColorActive : cfg.indicatorColorInactive
+
   readonly property real verticalCellHeight: Kirigami.Units.gridUnit * 2
   readonly property real cellLength: {
     if (vertical && !iconRotated) 
@@ -60,9 +65,13 @@ Item {
     source: root.iconName
     fallback: "desktop"
 
-    layer.enabled: root.cfg.iconDesaturateInactive
+    isMask: root.tinted
+    color: root.tinted ? root.iconColor : "transparent"
+
+
+    layer.enabled: root.colorMode === "greyscale" || root.colorMode === "greyInactive"
     layer.effect: MultiEffect {
-      saturation: root.desktop.isCurrent ? 0 : -1.0
+      saturation: root.greyscale ? -1.0 : 0
 
       Behavior on saturation {
         NumberAnimation { duration: Kirigami.Units.shortDuration }

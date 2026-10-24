@@ -122,9 +122,9 @@
       <label>List of icon names or paths for each virtual desktop</label>
       <default>internet-web-browser-symbolic,format-text-code-symbolic,music-note-16th-symbolic,folder-videos-symbolic</default>
     </entry>
-    <entry name="iconDesaturateInactive" type="Bool">
-      <label>Show icons for inactive desktops in greyscale.</label>
-      <default>false</default>
+    <entry name="iconColorMode" type="String">
+      <label>Choose how icons are coloured.</label>
+      <default>original</default>
     </entry>
   </group>
   <group name="Colors">

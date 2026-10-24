@@ -40,8 +40,8 @@ KCM.SimpleKCM {
   property alias cfg_labelWrap: labelWrap.checked
 
   property var cfg_iconNames: []
-  property alias cfg_iconDesaturateInactive: iconDesaturateInactive.checked
   property var cfg_iconNamesDefault
+  property string cfg_iconColorMode
 
   property alias cfg_labelTypeTemplate: labelTypeTemplate.text
   property var cfg_labelTypeList: []
@@ -413,11 +413,19 @@ KCM.SimpleKCM {
       Kirigami.FormData.label: i18n("Icon Options")
       visible: cfg_indicatorType === "icon"
     }
-    QC.CheckBox {
-      id: iconDesaturateInactive
-      Kirigami.FormData.label: i18n("Inactive desktops:")
-      text: i18n("Show icons in greyscale")
-    }    
+    QC.ComboBox {
+      Kirigami.FormData.label: i18n("Icon colours:")
+      textRole: "text"
+      valueRole: "value"
+      model: [
+        { text: i18n("Original"), value: "original" },
+        { text: i18n("Original, greyscale when inactive"), value: "greyInactive" },
+        { text: i18n("Greyscale"), value: "greyscale" },
+        { text: i18n("Custom colours"), value: "custom" }
+      ]
+      Component.onCompleted: currentIndex = indexOfValue(cfg_iconColorMode)
+      onActivated: cfg_iconColorMode = currentValue
+    } 
     QC.Button {
       text: i18n("Restore default icons")
       icon.name: "edit-undo"
