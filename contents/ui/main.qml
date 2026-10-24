@@ -67,6 +67,8 @@ PlasmoidItem {
       Rectangle {
         id: indicator
 
+        readonly property int desktopIndex: index
+
         color: "transparent"
 
         implicitWidth:  root.vertical ? 0 : indicatorContent.implicitWidth  + cfg.indicatorSpacing
@@ -120,10 +122,10 @@ PlasmoidItem {
 
         TaskManager.TasksModel {
           id: desktopWindows
-          virtualDesktop: desktopInfo.desktopIds[index]
+          virtualDesktop: desktopInfo.desktopIds[indicator.desktopIndex]
           activity: activityInfo.currentActivity
           filterByVirtualDesktop: true
-          filterByActivity: true
+          filterByActivity: activityInfo.currentActivity !== ""
         }
 
         HoverHandler { id: hover }
