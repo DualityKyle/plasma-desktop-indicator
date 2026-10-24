@@ -297,6 +297,8 @@ KCM.SimpleKCM {
       model: [
         { text: i18n("Line"), value: "line" },
         { text: i18n("Circle"), value: "circle" },
+        { text: i18n("Full"), value: "full" },
+        { text: i18n("Full + line"), value: "fullLine" },
         { text: i18n("None"), value: "none" }
       ]
       Component.onCompleted: currentIndex = indexOfValue(cfg_highlightType)

@@ -18,8 +18,10 @@ Loader {
   readonly property var cfg: Plasmoid.configuration
 
   readonly property var highlightTypes: ({
-    "line": "../highlightTypes/highlightLine.qml",
-    "circle": "../highlightTypes/highlightCircle.qml"
+    "line": "../highlightTypes/HighlightLine.qml",
+    "circle": "../highlightTypes/HighlightCircle.qml",
+    "full": "../highlightTypes/HighlightFull.qml",
+    "fullLine": "../highlightTypes/HighlightFullLine.qml"
   })
 
   readonly property color highlightColor: cfg.highlightCustomColors ? cfg.highlightColor : Kirigami.Theme.highlightColor
