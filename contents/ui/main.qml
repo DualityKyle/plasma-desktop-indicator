@@ -103,7 +103,15 @@ PlasmoidItem {
             property: "panelThickness"
             value: root.vertical ? indicator.width : indicator.height
           }
+
+          Binding {
+            target: indicatorContent.item
+            property: "hovered"
+            value: hover.hovered && [root.cfg.leftClickAction, root.cfg.rightClickAction].includes("goto")
+          }
         }
+
+        HoverHandler { id: hover }
 
         TapHandler {
           acceptedButtons: Qt.LeftButton

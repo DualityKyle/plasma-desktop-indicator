@@ -17,6 +17,7 @@ Item {
 
   property var desktop: ({ isCurrent: false, index: 0 })
   property bool vertical: false
+  property bool hovered: false
   property real panelThickness: 0
   readonly property var cfg: Plasmoid.configuration
 
@@ -49,6 +50,7 @@ Item {
 
     current: root.desktop.isCurrent
     vertical: root.vertical
+    hovered: root.hovered
   }
 
   Kirigami.Icon {

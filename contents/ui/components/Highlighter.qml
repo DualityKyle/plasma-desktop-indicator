@@ -13,6 +13,7 @@ Loader {
 
   property bool current: false
   property bool vertical: false
+  property bool hovered: false
   property string type: cfg.highlightType
 
   readonly property var cfg: Plasmoid.configuration
@@ -35,7 +36,9 @@ Loader {
   active: type !== "none"
   source: highlightTypes[type] ?? ""
 
-  Binding { target: root.item; property: "active"; value: root.current }
+  opacity: current ? 1 : 0.25
+
+  Binding { target: root.item; property: "active"; value: root.current || root.hovered }
   Binding { target: root.item; property: "vertical"; value: root.vertical }
   Binding { target: root.item; property: "color"; value: root.highlightColor }
 }
