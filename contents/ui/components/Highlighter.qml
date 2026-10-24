@@ -36,7 +36,7 @@ Loader {
   active: type !== "none"
   source: highlightTypes[type] ?? ""
 
-  opacity: current ? 1 : 0.25
+  opacity: current ? 1 : 0.35
 
   Binding { target: root.item; property: "active"; value: root.current || root.hovered }
   Binding { target: root.item; property: "vertical"; value: root.vertical }
