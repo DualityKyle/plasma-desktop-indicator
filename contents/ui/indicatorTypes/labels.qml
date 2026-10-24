@@ -12,16 +12,28 @@ import "../components"
 Item {
   id: root
 
-  property var desktop: ({ isCurrent: false, number: 1, name: "" })
+  property var desktop: ({ isCurrent: false, index: 0, number: 1, name: "" })
   property bool vertical: false
   property real panelThickness: 0
 
   readonly property var cfg: Plasmoid.configuration
 
-  readonly property string labelString: {
-    if (cfg.labelType === "name" && desktop.name !== "")
-      return desktop.name;
-    return String(desktop.number);
+  readonly property string labelText: {
+    const number = String(desktop.number);
+    const name = desktop.name || number;
+
+    switch (cfg.labelType) {
+      case "name":
+        return name;
+      case "template":
+        return (cfg.labelTypeTemplate || "%n")
+          .replace(/%n/g, number)
+          .replace(/%d/g, () => name);
+      case "list":
+        return (cfg.labelTypeList ?? [])[desktop.index] || "Extra";
+      default:
+        return number;
+    }
   }
 
   readonly property bool textRotated: labelText.rotated
@@ -61,7 +73,7 @@ Item {
     font.pixelSize: Math.max(root.activeTextSize, root.inactiveTextSize)
     font.bold: root.cfg.labelActiveBold || root.cfg.labelBold
     font.italic: root.cfg.labelActiveItalic || root.cfg.labelItalic
-    text: root.labelString
+    text: root.labelText
   }
 
   RotatableText {
@@ -80,7 +92,7 @@ Item {
     font.pixelSize: root.desktop.isCurrent ? root.activeTextSize : root.inactiveTextSize
     font.bold: root.desktop.isCurrent ? root.cfg.labelActiveBold : root.cfg.labelBold
     font.italic: root.desktop.isCurrent ? root.cfg.labelActiveItalic : root.cfg.labelItalic
-    text: root.labelString
+    text: root.labelText
 
     wrapText: root.cfg.labelWrap
     maxLength: root.maxLineLength

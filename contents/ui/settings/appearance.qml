@@ -43,19 +43,31 @@ KCM.SimpleKCM {
   property alias cfg_iconDesaturateInactive: iconDesaturateInactive.checked
   property var cfg_iconNamesDefault
 
+  property alias cfg_labelTypeTemplate: labelTypeTemplate.text
+  property var cfg_labelTypeList: []
+  property var cfg_labelTypeListDefault
+
   property int pickingIndex: -1
 
-  function iconAt(i) {
-    return (cfg_iconNames ?? [])[i] ?? "";
+  function entryAt(list, i) {
+    return (list ?? [])[i] ?? "";
   }
 
-  function setIconName(i, name) {
-    const names = (cfg_iconNames ?? []).slice();
-    while (names.length <= i)
-      names.push("");
-    names[i] = name;
-    cfg_iconNames = names;
+  function setEntry(list, i, value) {
+    const entries = (list ?? []).slice();
+    while (entries.length <= i)
+      entries.push("");
+    
+    entries[i] = value;
+
+    return entries;
   }
+
+  function iconAt(i) { return entryAt(cfg_iconNames, i); }
+  function setIconName(i, name) { cfg_iconNames = setEntry(cfg_iconNames, i, name); }
+
+  function labelAt(i) { return entryAt(cfg_labelTypeList, i); }
+  function setLabelName(i, name) { cfg_labelTypeList = setEntry(cfg_labelTypeList, i, name); }
 
   TaskManager.VirtualDesktopInfo { id: desktopInfo }
 
@@ -261,10 +273,21 @@ KCM.SimpleKCM {
       valueRole: "value"
       model: [
         { text: i18n("Desktop number"), value: "number" },
-        { text: i18n("Desktop name"), value: "name" }
+        { text: i18n("Desktop name"), value: "name" },
+        { text: i18n("Template"), value: "template" },
+        { text: i18n("Defined list"), value: "list" }
       ]
       Component.onCompleted: currentIndex = indexOfValue(cfg_labelType)
       onActivated: cfg_labelType = currentValue
+    }
+    QC.TextField {
+      id: labelTypeTemplate
+      Kirigami.FormData.label: i18n("Template:")
+      visible: cfg_indicatorType === "label" && cfg_labelType === "template"
+      placeholderText: "D%n"
+      QC.ToolTip.text: i18n("%n = desktop number, %d = desktop name")
+      QC.ToolTip.visible: hovered || activeFocus
+      QC.ToolTip.delay: Kirigami.Units.toolTipDelay
     }
     QC.ComboBox {
       Kirigami.FormData.label: i18n("Highlight:")
@@ -278,6 +301,27 @@ KCM.SimpleKCM {
       ]
       Component.onCompleted: currentIndex = indexOfValue(cfg_highlightType)
       onActivated: cfg_highlightType = currentValue
+    }
+    QC.Button {
+      visible: cfg_indicatorType === "label" && cfg_labelType === "list"
+      text: i18n("Restore default labels")
+      icon.name: "edit-undo"
+      onClicked: appearancePage.cfg_labelTypeList = (appearancePage.cfg_labelTypeListDefault ?? []).slice()
+    }
+    Repeater {
+      model: desktopInfo.numberOfDesktops
+
+      QC.TextField {
+        Kirigami.FormData.label: i18n("%1:", desktopInfo.desktopNames[index] || i18n("Desktop %1", index + 1))
+        visible: cfg_indicatorType === "label" && cfg_labelType === "list"
+        Layout.preferredWidth: Kirigami.Units.gridUnit * 12
+        placeholderText: "Extra"
+        text: appearancePage.entryAt(appearancePage.cfg_labelTypeList, index)
+        onEditingFinished: {
+          appearancePage.cfg_labelTypeList = appearancePage.withEntry(appearancePage.cfg_labelTypeList, index, text.trim());
+          text = Qt.binding(() => appearancePage.entryAt(appearancePage.cfg_labelTypeList, index));
+        }
+      }
     }
     RowLayout {
       Kirigami.FormData.label: i18n("Text size:")
@@ -394,7 +438,6 @@ KCM.SimpleKCM {
           QC.ToolTip.delay: Kirigami.Units.toolTipDelay
           onClicked: {
             appearancePage.pickingIndex = index;
-            //iconDialog.iconName = "";
             iconDialog.open();
           }
         }

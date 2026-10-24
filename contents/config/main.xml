@@ -74,6 +74,14 @@
       <label>Whether labels shows the desktop number or desktop name.</label>
       <default>number</default>
     </entry>
+    <entry name="labelTypeTemplate" type="String">
+      <label>Label template: %n is replaced by the desktop number, %d by the desktop name.</label>
+      <default>D%n</default>
+    </entry>
+    <entry name="labelTypeList" type="StringList">
+      <label>Label text for each virtual desktop, by position, when labelType is "list".</label>
+      <default>Web,Dev,Music,Video</default>
+    </entry>
     <entry name="highlightType" type="String">
       <label>Highlight style for the active desktop: line, circle, or none.</label>
       <default>line</default>
