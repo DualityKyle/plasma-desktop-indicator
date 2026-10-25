@@ -58,9 +58,7 @@ Item {
   Kirigami.Icon {
     readonly property real size: Math.min(root.iconSize, root.panelThickness - iconHighlighter.lineInset)
 
-    anchors.centerIn: parent
-    anchors.horizontalCenterOffset: root.vertical ? iconHighlighter.contentOffset : 0
-    anchors.verticalCenterOffset: root.vertical ? 0 : iconHighlighter.contentOffset    
+    anchors.centerIn: parent 
     
     width: size
     height: size

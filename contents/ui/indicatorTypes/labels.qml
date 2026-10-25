@@ -82,10 +82,7 @@ Item {
   RotatableText {
     id: labelText
     vertical: root.vertical
-
     anchors.centerIn: parent
-    anchors.horizontalCenterOffset: root.vertical ? labelHighlighter.contentOffset : 0
-    anchors.verticalCenterOffset: root.vertical ? 0 : labelHighlighter.contentOffset
 
     color: {
       if (!root.cfg.indicatorCustomColors)

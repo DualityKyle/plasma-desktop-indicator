@@ -27,11 +27,7 @@ Loader {
   })
 
   readonly property color highlightColor: cfg.highlightCustomColors ? cfg.highlightColor : Kirigami.Theme.highlightColor
-  readonly property real lineInset: type === "line" ? 3: 0
-  readonly property real contentOffset: 
-    (Plasmoid.location === PlasmaCore.Types.TopEdge || Plasmoid.location === PlasmaCore.Types.LeftEdge) 
-      ? -lineInset / 2 
-      : lineInset / 2
+  readonly property real lineInset: (type === "line" || type === "fullLine") ? 3: 0
 
   anchors.fill: parent
   active: type !== "none"
