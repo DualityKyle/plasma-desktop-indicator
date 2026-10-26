@@ -32,7 +32,8 @@ KCM.SimpleKCM {
         { text: i18n("Switch to next desktop"), value: "next" },
         { text: i18n("Switch to previous desktop"), value: "previous" },
         { text: i18n("Go to clicked desktop"), value: "goto" },
-        { text: i18n("Show desktop overview"), value: "overview" }
+        { text: i18n("Show overview"), value: "overview" },
+        { text: i18n("Show desktop"), value: "desktop" }
       ]
       Component.onCompleted: currentIndex = indexOfValue(cfg_leftClickAction)
       onActivated: cfg_leftClickAction = currentValue
@@ -46,7 +47,8 @@ KCM.SimpleKCM {
         { text: i18n("Switch to next desktop"), value: "next" },
         { text: i18n("Switch to previous desktop"), value: "previous" },
         { text: i18n("Go to clicked desktop"), value: "goto" },
-        { text: i18n("Show desktop overview"), value: "overview" }
+        { text: i18n("Show overview"), value: "overview" },
+        { text: i18n("Show desktop"), value: "desktop" }
       ]
       Component.onCompleted: currentIndex = indexOfValue(cfg_rightClickAction)
       onActivated: cfg_rightClickAction = currentValue

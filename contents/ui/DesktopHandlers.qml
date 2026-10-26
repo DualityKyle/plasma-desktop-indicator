@@ -66,8 +66,20 @@ Item {
     executable.exec("kcmshell6 kcm_kwin_virtualdesktops");
   }
 
-  function exposeDesktop() {
-    executable.exec('qdbus org.kde.kglobalaccel /component/kwin invokeShortcut Overview');
+  function showOverview() {
+    executable.exec(
+      "gdbus call --session --dest org.kde.kglobalaccel "
+      + "--object-path /component/kwin "
+      + "--method org.kde.kglobalaccel.Component.invokeShortcut \"Overview\""
+    );
+  }
+
+  function showDesktop() {
+    executable.exec(
+      "gdbus call --session --dest org.kde.kglobalaccel "
+      + "--object-path /component/kwin "
+      + "--method org.kde.kglobalaccel.Component.invokeShortcut \"Show Desktop\""
+    );
   }
 
   function stepDesktop(delta) {
@@ -83,7 +95,8 @@ Item {
     case "next":      stepDesktop(1); break;
     case "previous":  stepDesktop(-1); break;
     case "goto":      activateDesktopAt(clickedIndex); break;
-    case "overview":  exposeDesktop(); break;
+    case "overview":  showOverview(); break;
+    case "desktop":   showDesktop(); break;
     }
   }
 
