@@ -152,5 +152,13 @@
       <label>Colour of highlight colours when highlightCustomColors is true.</label>
       <default>#3daee9</default>
     </entry>
+    <entry name="highlightOccupiedSynced" type="Bool">
+      <label>Use the main highlight colour for inactive desktops with open windows.</label>
+      <default>true</default>
+    </entry>
+    <entry name="highlightOccupiedColor" type="Color">
+      <label>Highlight colour for inactive desktops with open windows, when highlightCustomColors is true.</label>
+      <default>#3daee9</default>
+    </entry>
   </group>
 </kcfg>

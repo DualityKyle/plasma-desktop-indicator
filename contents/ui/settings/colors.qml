@@ -17,6 +17,8 @@ KCM.SimpleKCM {
   property alias cfg_indicatorColorInactive: indicatorColorInactiveButton.color
   property alias cfg_highlightCustomColors: highlightCustomColors.checked
   property alias cfg_highlightColor: highlightColorButton.color
+  property alias cfg_highlightOccupiedColor: highlightOccupiedColorButton.color
+  property alias cfg_highlightOccupiedSynced: highlightOccupiedSynced.checked
 
   Kirigami.FormLayout {
     QC.Switch {
@@ -77,6 +79,24 @@ KCM.SimpleKCM {
       }
       QC.Label {
         text: highlightColorButton.color.toString().toUpperCase()
+      }
+    }
+    QC.CheckBox {
+      id: highlightOccupiedSynced
+      Kirigami.FormData.label: i18n("Desktops with windows:")
+      text: i18n("Use highlight colour")
+      enabled: highlightCustomColors.checked
+    }
+    RowLayout {
+      enabled: highlightCustomColors.checked && !highlightOccupiedSynced.checked
+      spacing: Kirigami.Units.largeSpacing
+
+      KQuickControls.ColorButton {
+        id: highlightOccupiedColorButton
+        showAlphaChannel: false
+      }
+      QC.Label {
+        text: highlightOccupiedColorButton.color.toString().toUpperCase()
       }
     }
   }

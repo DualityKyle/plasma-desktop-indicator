@@ -27,6 +27,11 @@ Loader {
   })
 
   readonly property color highlightColor: cfg.highlightCustomColors ? cfg.highlightColor : Kirigami.Theme.highlightColor
+  readonly property bool occupiedHasOwnColor: cfg.highlightCustomColors && !cfg.highlightOccupiedSynced
+  readonly property color occupiedColor: occupiedHasOwnColor ? cfg.highlightOccupiedColor : highlightColor
+  readonly property bool showingOccupied: !current && !hovered && occupied
+  readonly property color activeColor: showingOccupied ? occupiedColor : highlightColor
+
   readonly property real lineInset: (type === "line" || type === "fullLine") ? 3: 0
 
   anchors.fill: parent
@@ -37,5 +42,5 @@ Loader {
 
   Binding { target: root.item; property: "active"; value: root.current || root.hovered || root.occupied }
   Binding { target: root.item; property: "vertical"; value: root.vertical }
-  Binding { target: root.item; property: "color"; value: root.highlightColor }
+  Binding { target: root.item; property: "color"; value: root.activeColor }
 }
