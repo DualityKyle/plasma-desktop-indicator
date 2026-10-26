@@ -48,27 +48,36 @@ KCM.SimpleKCM {
   property var cfg_labelTypeList: []
   property var cfg_labelTypeListDefault
 
+  readonly property string extraIcon: "desktop-symbolic"
+  readonly property string extraLabel: "Extra"
+
   property int pickingIndex: -1
 
-  function entryAt(list, i) {
-    return (list ?? [])[i] ?? "";
+  function entryAt(key, i) {
+    return (appearancePage["cfg_" + key] ?? [])[i] ?? "";
   }
 
-  function setEntry(list, i, value) {
-    const entries = (list ?? []).slice();
+  function defaultAt(key, i, fallback) {
+    return (appearancePage["cfg_" + key + "Default"] ?? [])[i] || fallback;
+  }
+
+  function setEntry(key, i, value) {
+    const entries = (appearancePage["cfg_" + key] ?? []).slice();
     while (entries.length <= i)
       entries.push("");
     
     entries[i] = value;
 
-    return entries;
+    appearancePage["cfg_" + key] = entries;
   }
 
-  function iconAt(i) { return entryAt(cfg_iconNames, i); }
-  function setIconName(i, name) { cfg_iconNames = setEntry(cfg_iconNames, i, name); }
+  function defaultIconAt(i) { return defaultAt("iconNames", i, extraIcon); }
+  function iconAt(i) { return entryAt("iconNames", i) || defaultIconAt(i); }
+  function setIconName(i, name) { setEntry("iconNames", i, name || defaultIconAt(i)); }
 
-  function labelAt(i) { return entryAt(cfg_labelTypeList, i); }
-  function setLabelName(i, name) { cfg_labelTypeList = setEntry(cfg_labelTypeList, i, name); }
+  function defaultLabelAt(i) { return defaultAt("labelTypeList", i, extraLabel); }
+  function labelAt(i) { return entryAt("labelTypeList", i) || defaultLabelAt(i); }
+  function setLabelName(i, name) { setEntry("labelTypeList", i, name || defaultLabelAt(i)); }
 
   TaskManager.VirtualDesktopInfo { id: desktopInfo }
 
@@ -318,15 +327,24 @@ KCM.SimpleKCM {
     Repeater {
       model: desktopInfo.numberOfDesktops
 
-      QC.TextField {
+      RowLayout {
         Kirigami.FormData.label: i18n("%1:", desktopInfo.desktopNames[index] || i18n("Desktop %1", index + 1))
         visible: cfg_indicatorType === "label" && cfg_labelType === "list"
-        Layout.preferredWidth: Kirigami.Units.gridUnit * 12
-        placeholderText: "Extra"
-        text: appearancePage.entryAt(appearancePage.cfg_labelTypeList, index)
-        onEditingFinished: {
-          appearancePage.cfg_labelTypeList = appearancePage.withEntry(appearancePage.cfg_labelTypeList, index, text.trim());
-          text = Qt.binding(() => appearancePage.entryAt(appearancePage.cfg_labelTypeList, index));
+      
+        QC.TextField {
+          Layout.preferredWidth: Kirigami.Units.gridUnit * 12
+          placeholderText: "Extra"
+          text: appearancePage.labelAt(index)
+          onEditingFinished: {
+            appearancePage.setLabelName(index, text.trim())
+            text = Qt.binding(() => appearancePage.labelAt(index));
+          }
+        }
+        QC.ToolButton {
+          icon.name: "edit-undo"
+          display: QC.AbstractButton.IconOnly
+          visible: appearancePage.labelAt(index) !== appearancePage.defaultLabelAt(index)
+          onClicked: appearancePage.setLabelName(index, appearancePage.defaultLabelAt(index))
         }
       }
     }
@@ -466,12 +484,12 @@ KCM.SimpleKCM {
           }
         }
         QC.ToolButton {
-          icon.name: "edit-clear"
+          icon.name: "edit-undo"
           display: QC.AbstractButton.IconOnly
-          visible: appearancePage.iconAt(index) !== ""
+          visible: appearancePage.iconAt(index) !== appearancePage.defaultIconAt(index)
           QC.ToolTip.text: i18n("Reset to default")
           QC.ToolTip.visible: hovered
-          onClicked: appearancePage.setIconName(index, "")
+          onClicked: appearancePage.setIconName(index, appearancePage.defaultIconAt(index))
         }
       }
     }
